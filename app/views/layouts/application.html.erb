@@ -25,83 +25,87 @@
     <%# Includes all stylesheet files in app/assets/stylesheets %>
     <%= stylesheet_link_tag :app, "data-turbo-track": "reload" %>
     <style>
-  /* 1. GENERAL MOBILE FIXES */
+  /* === MOBILE FIXES === */
   @media (max-width: 768px) {
+    /* 1. Stop the whole page from sliding left/right */
+    html, body {
+      overflow-x: hidden;
+      width: 100%;
+    }
+    
     .container {
-      width: 100% !important;
-      padding-left: 10px !important;
-      padding-right: 10px !important;
-      overflow-x: hidden; /* Stop horizontal scrolling */
+      padding-left: 5px !important;
+      padding-right: 5px !important;
+      max-width: 100% !important;
     }
 
-    /* Fix the "Peace of Mind" box width */
-    .card, .border, .shadow-sm {
+    /* 2. Fix the "Peace of Mind" Box & Grand Total Box */
+    .card, .border, .shadow-sm, .alert {
       width: 100% !important;
       margin-left: 0 !important;
       margin-right: 0 !important;
+      box-sizing: border-box !important; /* Includes padding in width */
     }
 
-    /* Make text smaller on phone so tables fit */
-    body, table, th, td {
-      font-size: 14px !important;
-    }
-
-    /* Fix the Red Button cutting off */
+    /* 3. Fix the Red Button Text */
     .btn {
-      white-space: normal !important;
-      height: auto !important;
-      padding: 12px 10px !important;
+      white-space: normal !important; /* Wrap text */
+      font-size: 14px !important;     /* Smaller text */
+      padding: 10px 5px !important;
       width: 100% !important;
       display: block;
-      margin-bottom: 10px;
     }
-    
-    /* Allow tables to scroll sideways if they are still too big */
+
+    /* 4. Tame the Table */
+    /* This forces the table to scroll sideways INSIDE its box, 
+       instead of stretching the whole page */
     .table-responsive {
       display: block;
       width: 100%;
       overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+    }
+    
+    /* Make table text tiny so more fits */
+    table td, table th {
+      font-size: 11px !important; 
+      padding: 4px !important;
     }
   }
 
-  /* 2. PDF / PRINTING FIXES */
+  /* === PDF / PRINT FIXES === */
   @media print {
-    /* Hide buttons and navigation when printing */
-    .btn, button, .navbar, .no-print, header, footer {
+    @page {
+      size: A4;
+      margin: 5mm; /* Very small margins to fit more */
+    }
+
+    body {
+      /* Shrink EVERYTHING by 10% to fit on paper */
+      zoom: 0.9; 
+      -webkit-print-color-adjust: exact !important;
+      print-color-adjust: exact !important;
+      background-color: white !important;
+    }
+
+    /* Hide web-only junk */
+    .btn, .navbar, footer, .no-print {
       display: none !important;
     }
 
-    /* Force background colors to show up (otherwise logos/headers look white) */
-    body {
-      -webkit-print-color-adjust: exact !important;
-      print-color-adjust: exact !important;
-      background: white !important;
-    }
-
-    /* Reset widths for paper size */
-    .container, .card, .row {
+    /* Force layouts to be full width */
+    .container, .row, .col-md-6, .card {
       width: 100% !important;
       max-width: 100% !important;
       margin: 0 !important;
       padding: 0 !important;
-      box-shadow: none !important;
-      border: none !important;
+      float: none !important;
+      border: 1px solid #ddd !important; /* Add thin borders so it looks like a document */
     }
 
-    /* Ensure text is black and sharp */
-    body, p, td, li {
-      color: #000 !important;
-    }
-
-    /* Prevent page breaks inside important elements */
-    tr, img, .card {
+    /* Stop page breaks inside rows */
+    tr {
       page-break-inside: avoid;
-    }
-
-    /* Use standard page margins */
-    @page {
-      margin: 1cm;
-      size: auto;
     }
   }
 </style>
