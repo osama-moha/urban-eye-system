@@ -23,6 +23,29 @@
 
     <%# Includes all stylesheet files in app/assets/stylesheets %>
     <%= stylesheet_link_tag :app, "data-turbo-track": "reload" %>
+    <style>
+  /* MOBILE REPAIRS */
+  @media (max-width: 768px) {
+    /* 1. Fix the cut-off button */
+    .btn {
+      white-space: normal !important; /* Allow text to wrap to two lines */
+      height: auto !important;        /* Let button grow taller */
+      padding: 12px 20px !important;  /* Add breathing room */
+      font-size: 1rem !important;     /* prevent huge text */
+    }
+
+    /* 2. Add breathing room to the sides of the screen */
+    .container {
+      padding-left: 15px !important;
+      padding-right: 15px !important;
+    }
+
+    /* 3. Fix table squishing */
+    table {
+      font-size: 0.9rem !important; /* Make table text slightly smaller */
+    }
+  }
+</style>
   </head>
 
   <body class="bg-light">
