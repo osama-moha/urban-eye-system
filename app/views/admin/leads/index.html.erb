@@ -1,0 +1,113 @@
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
+<style>
+  body { font-family: sans-serif; background-color: #f8f9fa; }
+  .text-navy { color: #003366; }
+  .bg-navy { background-color: #003366; }
+</style>
+
+<div class="container-fluid mt-4">
+  
+  <div class="row mb-4">
+    <div class="col-md-4">
+      <div class="card border-0 shadow-sm p-3 text-white" style="background-color: #003366;">
+        <small class="text-uppercase fw-bold opacity-75">Total Pipeline</small>
+        <h2 class="mb-0"><%= @leads.count %> Leads</h2>
+      </div>
+    </div>
+    
+    <div class="col-md-4">
+      <div class="card border-0 shadow-sm p-3 bg-white text-center">
+        <small class="text-uppercase fw-bold text-muted">Residential</small>
+        <h2 class="mb-0 text-dark"><%= @leads.where(property_type: "Home / Residential").count %></h2>
+      </div>
+    </div>
+
+    <div class="col-md-4">
+      <div class="card border-0 shadow-sm p-3 bg-white text-center">
+        <small class="text-uppercase fw-bold text-muted">Commercial</small>
+        <h2 class="mb-0 text-dark"><%= @leads.where(property_type: "Commercial / Office").count %></h2>
+      </div>
+    </div>
+  </div>
+
+  <div class="card shadow-sm border-0">
+    <div class="card-header bg-white py-3 d-flex justify-content-between align-items-center">
+      <h5 class="mb-0 fw-bold" style="color: #003366;">Leads Database</h5>
+      <span class="badge bg-light text-dark border">
+        Live Data
+      </span>
+    </div>
+    
+    <div class="table-responsive">
+      <table class="table table-hover align-middle mb-0">
+        <thead class="bg-light">
+          <tr>
+            <th>ID</th>
+            <th>Client Name</th>
+            <th>Contact Details</th>
+            <th>Location</th>
+            <th>Interest</th>
+            <th>Date Added</th>
+            <th class="text-end">Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% @leads.each do |lead| %>
+            <tr>
+              <td class="fw-bold text-muted">#<%= lead.id %></td>
+              
+              <td class="fw-bold" style="color: #003366;">
+                <%= lead.name.presence || "Unknown Lead" %>
+              </td>
+              
+              <td>
+                 <div class="d-flex flex-column">
+                   <span class="fw-bold text-dark"><%= lead.phone %></span>
+                   <% if lead.email.present? %>
+                     <small class="text-muted"><%= lead.email %></small>
+                   <% end %>
+                 </div>
+              </td>
+              
+              <td>
+                <% if lead.location.present? %>
+                   <span class="badge bg-danger bg-opacity-10 text-danger border border-danger border-opacity-25">
+                     <i class="bi bi-geo-alt-fill"></i> <%= lead.location %>
+                   </span>
+                <% else %>
+                   <span class="text-muted">-</span>
+                <% end %>
+              </td>
+              
+              <td>
+                <% if lead.property_type.present? %>
+                  <span class="badge bg-info bg-opacity-10 text-dark border border-info border-opacity-25">
+                    <%= lead.property_type %>
+                  </span>
+                <% else %>
+                  <span class="text-muted small">N/A</span>
+                <% end %>
+              </td>
+              
+              <td class="small text-muted">
+                <%= lead.created_at.strftime("%d %b, %Y") %>
+              </td>
+              
+              <td class="text-end">
+                <% quote_count = lead.quotes.count %>
+                <% if quote_count > 0 %>
+                  <a href="<%= admin_quotes_path(lead_id: lead.id) %>" class="btn btn-sm btn-outline-primary">
+  View <%= quote_count %> Quote(s)
+</a>
+                <% else %>
+                  <span class="badge bg-secondary opacity-25">No Activity</span>
+                <% end %>
+              </td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>

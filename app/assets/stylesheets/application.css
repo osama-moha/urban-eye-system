@@ -1,0 +1,135 @@
+:root {
+  --urban-blue: #003366;
+  --urban-red: #cc0000;
+  --urban-grey: #f4f6f8;
+}
+
+/* Watermark Styling */
+.pdf-watermark {
+  position: absolute;
+  top: 55%; /* Pushes it down away from the header logo */
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 500px !important; /* Forces a specific size */
+  opacity: 0.05; /* Very faint to ensure readability */
+  z-index: 0; /* Sits behind the card-body content */
+  pointer-events: none;
+  filter: grayscale(100%);
+}
+
+.pdf-watermark img {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+/* Ensure the table is not blocking the watermark */
+.table, .table tr, .table td {
+  background-color: transparent !important;
+}
+
+.table td {
+  padding: 15px !important; /* Adds space around your text */
+  vertical-align: top; /* Keeps descriptions starting from the top */
+}
+
+.table td.text-center {
+  vertical-align: middle; /* Centers the "1 Set" labels vertically */
+}
+/* Table Header Color Override */
+.table-dark {
+  background-color: #003366 !important;
+  color: white;
+}
+
+.table-dark th {
+  background-color: #003366 !important;
+  border-color: #004080;
+}
+
+/* Makes the table transparent so the watermark is visible behind it */
+.table {
+  background-color: transparent !important;
+}
+
+.table td, .table tr {
+  background-color: transparent !important;
+}
+/* --- PRINT SETTINGS (The "Nuclear" Fix) --- */
+@media print {
+  /* 1. Narrow Margins & Page Setup */
+  @page {
+    margin: 10mm; 
+    size: auto;
+  }
+
+  /* 2. Remove all outer spacing */
+  body {
+    padding: 0 !important;
+    font-size: 12px;
+  }
+  
+  .signature-section {
+    page-break-inside: avoid;
+    break-inside: avoid;
+  }
+  
+  .container, .card, .card-body {
+    width: 100% !important;
+    max-width: 100% !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    border: none !important;
+    box-shadow: none !important;
+  }
+
+  /* 3. Compact the Header */
+  .quote-header {
+    margin-bottom: 10px !important;
+    padding-bottom: 5px !important;
+  }
+  .brand-logo {
+    width: 120px !important;
+  }
+  .doc-title {
+    font-size: 22px !important;
+    margin-bottom: 0 !important;
+  }
+
+  /* 4. Compact the Table Rows */
+  .table td, .table th {
+    padding: 5px 8px !important;
+  }
+  
+  /* 5. Pull Terms Up */
+  .mt-5 {
+    margin-top: 15px !important;
+  }
+  .p-4 {
+    padding: 10px !important;
+  }
+  
+  /* 6. Ensure Blue Colors Print */
+  .print-color, .table-dark {
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+
+  /* 7. Hide Action Buttons - FIXED SYNTAX HERE */
+  .d-print-none {
+    display: none !important;
+  } /* <--- This closing bracket was missing! */
+
+  /* 8. NUCLEAR SCISSORS: Cut off the ghost page */
+  html, body {
+    height: 100vh; 
+    overflow: hidden !important; 
+  }
+  
+  /* 9. Shrink Watermark */
+  .pdf-watermark {
+    z-index: -1;
+    width: 80% !important;
+    height: auto !important;
+  }
+}

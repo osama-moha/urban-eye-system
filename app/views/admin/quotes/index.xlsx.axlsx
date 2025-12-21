@@ -1,0 +1,19 @@
+wb = xlsx_package.workbook
+
+wb.add_worksheet(name: "Urban Eye Quotes") do |sheet|
+  # Create the header row
+  sheet.add_row ["Ref #", "Client Name", "Phone", "Camera Count", "Total Amount (KES)", "Status", "Date"]
+
+  # Add a row for each quote in your database
+  @quotes.each do |quote|
+    sheet.add_row [
+      "UES/2025/QT-#{quote.id.to_s.rjust(4, '0')}",
+      quote.lead&.name || "N/A",
+      quote.lead&.phone || "N/A",
+      quote.camera_count,
+      quote.total_amount.to_i,
+      quote.status || "Pending",
+      quote.created_at.strftime("%d-%m-%Y")
+    ]
+  end
+end

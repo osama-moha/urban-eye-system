@@ -1,0 +1,40 @@
+<div class="d-flex align-items-center justify-content-center" style="min-height: 100vh; background: #f4f6f9;">
+  <div class="card border-0 shadow-lg" style="width: 400px;">
+    <div class="card-header text-center py-4" style="background-color: #003366;">
+      <h4 class="text-white fw-bold mb-0">Urban Eye Admin</h4>
+      <small class="text-white-50">Authorized Personnel Only</small>
+    </div>
+    
+    <div class="card-body p-4">
+      <%= form_for(resource, as: resource_name, url: session_path(resource_name)) do |f| %>
+        
+        <div class="mb-3">
+          <%= f.label :email, class: "form-label text-muted small fw-bold" %>
+          <%= f.email_field :email, autofocus: true, autocomplete: "email", class: "form-control form-control-lg", placeholder: "admin@urbaneye.co.ke" %>
+        </div>
+
+        <div class="mb-4">
+          <%= f.label :password, class: "form-label text-muted small fw-bold" %>
+          <%= f.password_field :password, autocomplete: "current-password", class: "form-control form-control-lg", placeholder: "••••••••" %>
+        </div>
+
+        <% if devise_mapping.rememberable? %>
+          <div class="mb-3 form-check">
+            <%= f.check_box :remember_me, class: "form-check-input" %>
+            <%= f.label :remember_me, class: "form-check-label small" %>
+          </div>
+        <% end %>
+
+        <div class="d-grid">
+          <%= f.submit "Secure Login", class: "btn btn-danger btn-lg shadow-sm" %>
+        </div>
+      <% end %>
+    </div>
+    
+    <div class="card-footer text-center bg-light py-3 border-0">
+      <small class="text-muted" style="font-size: 0.75rem;">
+        <i class="bi bi-shield-lock-fill"></i> Access is logged and monitored.
+      </small>
+    </div>
+  </div>
+</div>

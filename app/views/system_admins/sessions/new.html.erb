@@ -1,0 +1,54 @@
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
+
+<style>
+  body {
+    background-color: #f4f6f9;
+    font-family: system-ui, -apple-system, sans-serif;
+  }
+  .bg-urban-navy { background-color: #003366; }
+  .btn-urban-red { background-color: #dc3545; color: white; border: none; }
+  .btn-urban-red:hover { background-color: #bb2d3b; color: white; }
+</style>
+
+<div class="d-flex align-items-center justify-content-center" style="min-height: 100vh;">
+  <div class="card border-0 shadow-lg" style="width: 400px;">
+    
+    <div class="card-header text-center py-4 bg-urban-navy">
+      <h4 class="text-white fw-bold mb-0">Urban Eye Admin</h4>
+      <small class="text-white-50">Authorized Personnel Only</small>
+    </div>
+    
+    <div class="card-body p-4 bg-white">
+      <%= form_for(resource, as: resource_name, url: session_path(resource_name)) do |f| %>
+        
+        <div class="mb-3">
+          <%= f.label :email, "Admin Email", class: "form-label text-muted small fw-bold" %>
+          <%= f.email_field :email, autofocus: true, autocomplete: "email", class: "form-control form-control-lg", placeholder: "name@urbaneye.co.ke" %>
+        </div>
+
+        <div class="mb-4">
+          <%= f.label :password, class: "form-label text-muted small fw-bold" %>
+          <%= f.password_field :password, autocomplete: "current-password", class: "form-control form-control-lg", placeholder: "••••••••" %>
+        </div>
+
+        <% if devise_mapping.rememberable? %>
+          <div class="mb-3 form-check">
+            <%= f.check_box :remember_me, class: "form-check-input" %>
+            <%= f.label :remember_me, class: "form-check-label small" %>
+          </div>
+        <% end %>
+
+        <div class="d-grid">
+          <%= f.submit "Secure Login", class: "btn btn-urban-red btn-lg py-2 shadow-sm" %>
+        </div>
+      <% end %>
+    </div>
+    
+    <div class="card-footer text-center bg-light py-3 border-0">
+      <small class="text-muted" style="font-size: 0.75rem;">
+        <i class="bi bi-shield-lock-fill"></i> System Access Logged
+      </small>
+    </div>
+  </div>
+</div>

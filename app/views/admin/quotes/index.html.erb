@@ -1,0 +1,111 @@
+<div class="container-fluid mt-4">
+  <% if notice %>
+    <div class="alert alert-success alert-dismissible fade show mb-4" role="alert">
+      <i class="bi bi-check-circle-fill me-2"></i> <%= notice %>
+      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+  <% end %>
+
+  <div class="row mb-4">
+    <div class="col-md-4">
+      <div class="card border-0 shadow-sm p-3 text-white" style="background-color: #003366;">
+        <small class="text-uppercase fw-bold opacity-75">Pipeline Value</small>
+        <h2 class="mb-0">KES <%= number_with_delimiter(Quote.sum(:total_amount).to_i) %></h2>
+      </div>
+    </div>
+    <div class="col-md-4">
+      <div class="card border-0 shadow-sm p-3 bg-white text-center">
+        <small class="text-uppercase fw-bold text-muted">Total Leads</small>
+        <h2 class="mb-0 text-dark"><%= Lead.count %></h2>
+      </div>
+    </div>
+    <div class="col-md-4">
+      <div class="card border-0 shadow-sm p-3 bg-white text-center">
+        <small class="text-uppercase fw-bold text-muted">Camera Units Quoted</small>
+        <h2 class="mb-0 text-dark"><%= Quote.sum(:camera_count) %></h2>
+      </div>
+    </div>
+  </div>
+
+  <% if @lead.present? %>
+    <div class="alert alert-info d-flex justify-content-between align-items-center mb-4 border-0 shadow-sm" style="background-color: #e3f2fd; color: #003366;">
+      <div>
+        <i class="bi bi-funnel-fill me-2"></i> 
+        Showing results for client: <strong><%= @lead.name %></strong>
+      </div>
+      <%= link_to admin_quotes_path, class: "btn btn-sm btn-light border text-danger fw-bold" do %>
+        <i class="bi bi-x-circle-fill"></i> Clear Filter
+      <% end %>
+    </div>
+  <% end %>
+
+  <div class="card shadow-sm border-0">
+    <div class="card-header bg-white py-3 d-flex justify-content-between align-items-center">
+      <h5 class="mb-0 fw-bold">Recent Quotations</h5>
+      <div>
+        <%= link_to 'Export Excel', admin_quotes_path(format: :xlsx), class: 'btn btn-outline-success btn-sm me-2' %>
+        <%= link_to 'New Quote', new_quote_path, class: 'btn btn-primary btn-sm' %>
+      </div>
+    </div>
+    <div class="table-responsive">
+      <table class="table table-hover align-middle mb-0">
+        <thead class="bg-light">
+          <tr>
+            <th>Ref #</th>
+            <th>Client Lead</th>
+            <th>System Size</th>
+            <th>Amount</th>
+            <th>Date</th>
+            <th>Status</th>
+            <th class="text-end">Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% @quotes.each do |quote| %>
+            <tr>
+              <td class="fw-bold text-navy">UES/2025/QT-<%= quote.id.to_s.rjust(4, '0') %></td>
+              <td>
+                <% if quote.lead %>
+                  <%= quote.lead.name.presence || "Lead ##{quote.lead.id}" %>
+                  <br><small class="text-muted"><%= quote.lead.phone %></small>
+                <% else %>
+                  <span class="text-muted fst-italic">No Lead Linked</span>
+                <% end %>
+              </td>
+              <td>
+                <span class="badge bg-light text-dark border"><%= quote.camera_count %> Cameras</span>
+              </td>
+              <td class="fw-bold">KES <%= number_with_delimiter(quote.total_amount.to_i) %></td>
+              <td><%= quote.created_at.strftime("%d %b, %Y") %></td>
+              
+              <td>
+                <div class="dropdown">
+                  <% badge_class = case quote.status 
+                       when 'Paid' then 'bg-success' 
+                       when 'Lost' then 'bg-danger' 
+                       else 'bg-warning text-dark' 
+                     end %>
+                  <button class="badge <%= badge_class %> border-0 dropdown-toggle" data-bs-toggle="dropdown">
+                    <%= quote.status || 'Pending' %>
+                  </button>
+                  <ul class="dropdown-menu">
+                    <li><%= button_to 'Pending', update_status_admin_quote_path(quote, status: 'Pending'), method: :patch, class: 'dropdown-item' %></li>
+                    <li><%= button_to 'Paid', update_status_admin_quote_path(quote, status: 'Paid'), method: :patch, class: 'dropdown-item' %></li>
+                    <li><%= button_to 'Lost', update_status_admin_quote_path(quote, status: 'Lost'), method: :patch, class: 'dropdown-item' %></li>
+                  </ul>
+                </div>
+              </td>
+
+              <td class="text-end">
+                <div class="btn-group">
+                  <%= link_to 'View PDF', quote_path(quote), class: 'btn btn-sm btn-outline-dark' %>
+                  <%= link_to 'Edit', edit_admin_quote_path(quote), class: 'btn btn-sm btn-outline-secondary' %>
+                </div>
+              </td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>

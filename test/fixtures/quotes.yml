@@ -1,0 +1,13 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  lead: one
+  camera_count: 1
+  floors: 1
+  estimated_price: 9.99
+
+two:
+  lead: two
+  camera_count: 1
+  floors: 1
+  estimated_price: 9.99
