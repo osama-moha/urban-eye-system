@@ -6,4 +6,4 @@ bundle install
 ./bin/rails assets:precompile
 ./bin/rails assets:clean
 ./bin/rails db:migrate
-./bin/rails runner "SystemAdmin.find_by(email: 'admin@urbaneye.co.ke')&.update(password: 'Reset123!', password_confirmation: 'Reset123!')"
+./bin/rails runner "SystemAdmin.where(email: 'admin@urbaneye.co.ke').first_or_initialize.update!(password: 'Reset123!', password_confirmation: 'Reset123!')"
