@@ -25,25 +25,83 @@
     <%# Includes all stylesheet files in app/assets/stylesheets %>
     <%= stylesheet_link_tag :app, "data-turbo-track": "reload" %>
     <style>
-  /* MOBILE REPAIRS */
+  /* 1. GENERAL MOBILE FIXES */
   @media (max-width: 768px) {
-    /* 1. Fix the cut-off button */
-    .btn {
-      white-space: normal !important; /* Allow text to wrap to two lines */
-      height: auto !important;        /* Let button grow taller */
-      padding: 12px 20px !important;  /* Add breathing room */
-      font-size: 1rem !important;     /* prevent huge text */
-    }
-
-    /* 2. Add breathing room to the sides of the screen */
     .container {
-      padding-left: 15px !important;
-      padding-right: 15px !important;
+      width: 100% !important;
+      padding-left: 10px !important;
+      padding-right: 10px !important;
+      overflow-x: hidden; /* Stop horizontal scrolling */
     }
 
-    /* 3. Fix table squishing */
-    table {
-      font-size: 0.9rem !important; /* Make table text slightly smaller */
+    /* Fix the "Peace of Mind" box width */
+    .card, .border, .shadow-sm {
+      width: 100% !important;
+      margin-left: 0 !important;
+      margin-right: 0 !important;
+    }
+
+    /* Make text smaller on phone so tables fit */
+    body, table, th, td {
+      font-size: 14px !important;
+    }
+
+    /* Fix the Red Button cutting off */
+    .btn {
+      white-space: normal !important;
+      height: auto !important;
+      padding: 12px 10px !important;
+      width: 100% !important;
+      display: block;
+      margin-bottom: 10px;
+    }
+    
+    /* Allow tables to scroll sideways if they are still too big */
+    .table-responsive {
+      display: block;
+      width: 100%;
+      overflow-x: auto;
+    }
+  }
+
+  /* 2. PDF / PRINTING FIXES */
+  @media print {
+    /* Hide buttons and navigation when printing */
+    .btn, button, .navbar, .no-print, header, footer {
+      display: none !important;
+    }
+
+    /* Force background colors to show up (otherwise logos/headers look white) */
+    body {
+      -webkit-print-color-adjust: exact !important;
+      print-color-adjust: exact !important;
+      background: white !important;
+    }
+
+    /* Reset widths for paper size */
+    .container, .card, .row {
+      width: 100% !important;
+      max-width: 100% !important;
+      margin: 0 !important;
+      padding: 0 !important;
+      box-shadow: none !important;
+      border: none !important;
+    }
+
+    /* Ensure text is black and sharp */
+    body, p, td, li {
+      color: #000 !important;
+    }
+
+    /* Prevent page breaks inside important elements */
+    tr, img, .card {
+      page-break-inside: avoid;
+    }
+
+    /* Use standard page margins */
+    @page {
+      margin: 1cm;
+      size: auto;
     }
   }
 </style>
