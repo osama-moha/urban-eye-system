@@ -7,83 +7,108 @@
 
   body {
     background-color: var(--brand-light);
-    position: relative; /* Needed for the overlay */
+    position: relative;
     min-height: 100vh;
   }
 
-  /* This creates the Premium Navy Header Block */
+  /* Premium Header Block */
   body::before {
     content: "";
     position: absolute;
     top: 0;
     left: 0;
     width: 100%;
-    height: 320px; /* Covers the top of the page */
+    height: 280px; /* Slightly shorter to let cards pop */
     background: linear-gradient(170deg, var(--brand-blue) 0%, #001a33 100%);
-    z-index: -1; /* Ensures it stays behind the card */
-    
-    /* Optional: Adds a subtle curve at the bottom */
+    z-index: -1;
     clip-path: polygon(0 0, 100% 0, 100% 85%, 0% 100%);
   }
 
-  .card-urban {
+  /* Main Container Card (Background Wrapper) */
+  .card-urban-wrapper {
+    background: transparent; /* Changed to transparent so inner cards stand out */
     border: none;
-    /* CHANGE THIS LINE from --brand-blue to --brand-red */
-    border-top: 5px solid var(--brand-red); 
-    border-radius: 12px;
   }
 
-  .section-title {
+  /* Internal Section Cards */
+  .section-card {
+    border: 1px solid rgba(0,0,0,0.05);
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.03);
+    margin-bottom: 1.5rem;
+    overflow: hidden;
+    background: white;
+  }
+
+  .section-card-header {
+    background-color: #fff;
+    border-bottom: 1px solid #f0f0f0;
+    padding: 1.25rem 1.5rem;
+  }
+
+  .section-title-text {
     color: var(--brand-blue);
     font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-    font-size: 0.9rem;
-    margin-bottom: 15px;
-    border-bottom: 2px solid #e9ecef;
-    padding-bottom: 5px;
+    font-size: 1.1rem;
+    margin: 0;
+    display: flex;
+    align-items: center;
   }
 
-  .form-label { font-weight: 600; color: #495057; }
+  .section-title-icon {
+    color: var(--brand-red);
+    margin-right: 10px;
+    font-size: 1.2rem;
+  }
+
+  .form-label { 
+    font-weight: 600; 
+    color: #343a40; 
+    font-size: 0.9rem;
+    margin-bottom: 0.4rem;
+  }
   
   .form-control, .form-select {
     border-radius: 8px;
     padding: 12px;
-    border: 1px solid #ced4da;
-    transition: all 0.3s;
+    border: 1px solid #dee2e6;
+    font-size: 0.95rem;
   }
 
   .form-control:focus, .form-select:focus {
     border-color: var(--brand-blue);
-    box-shadow: 0 0 0 4px rgba(14, 42, 92, 0.1);
+    box-shadow: 0 0 0 3px rgba(14, 42, 92, 0.1);
   }
 
+  /* Hardware Option Cards (Monitors, UPS) */
   .option-card {
     border: 1px solid #e9ecef;
     border-radius: 10px;
     transition: all 0.2s;
+    background-color: #f8f9fa;
   }
   
   .option-card:hover {
     border-color: var(--brand-blue);
     background-color: #fff;
-    box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+    box-shadow: 0 4px 10px rgba(0,0,0,0.05);
   }
 
   .btn-calculate {
     background-color: var(--brand-red);
     color: white;
-    font-weight: bold;
+    font-weight: 800;
     text-transform: uppercase;
-    letter-spacing: 1px;
+    letter-spacing: 0.5px;
     border: none;
+    border-radius: 8px;
     transition: all 0.3s;
   }
 
   .btn-calculate:hover {
     background-color: #b71c1c;
     transform: translateY(-2px);
-    box-shadow: 0 5px 15px rgba(198, 40, 40, 0.3);
+    box-shadow: 0 8px 20px rgba(198, 40, 40, 0.25);
   }
 </style>
 
@@ -91,158 +116,168 @@
   <div class="row justify-content-center">
     <div class="col-lg-8">
       
-      <div class="card card-urban shadow-lg">
-        
-        <div class="text-center pt-4 pb-2">
-          <%= image_tag "logo.png", style: "max-width: 180px;", class: "mb-3" %>
-          <h2 class="fw-bold" style="color: var(--brand-blue);">Get Your Security Estimate</h2>
-          <p class="text-muted">Instant Quote • 2025 Price Lock</p>
-        </div>
+      <div class="text-center pt-4 pb-4">
+        <%= image_tag "logo.png", style: "max-width: 160px;", class: "mb-3 bg-white p-2 rounded shadow-sm" %>
+        <h2 class="fw-bold text-white mb-1">Get Your Security Estimate</h2>
+        <p class="text-white-50">Takes 60 Seconds • No Obligation • 2025 Price Lock</p>
+      </div>
 
-        <div class="card-body p-4 p-md-5">
+      <div class="card-urban-wrapper">
           
-          <%= form_with model: @quote, url: quotes_path do |form| %>
+          <%= form_with model: @quote, url: quotes_path, class: "needs-validation" do |form| %>
 
-            <div class="section-title">1. Camera Configuration</div>
-            
-            <div class="row g-3 mb-4">
-              <div class="col-md-6">
-                <%= form.label :camera_count, "Total Cameras Needed", class: "form-label" %>
-                <%= form.number_field :camera_count, class: "form-control form-control-lg", min: 1, max: 64, placeholder: "e.g. 8" %>
+            <div class="section-card">
+              <div class="section-card-header">
+                <h5 class="section-title-text">
+                  <i class="bi bi-camera-video section-title-icon"></i> 1. Camera Configuration
+                </h5>
               </div>
-              <div class="col-md-6">
-                 <%= form.label :outdoor_count, "How many are Outdoors?", class: "form-label" %>
-                 <%= form.number_field :outdoor_count, class: "form-control form-control-lg", value: 0, min: 0 %>
-                 <div class="form-text text-muted small">Includes weatherproof IP67 housing.</div>
+              <div class="card-body p-4">
+                <div class="row g-4">
+                  <div class="col-md-6">
+                    <%= form.label :camera_count, "Total Cameras Needed", class: "form-label" %>
+                    <%= form.number_field :camera_count, class: "form-control", min: 1, max: 64, placeholder: "e.g. 6 (Gate, Lounge, Parking)" %>
+                  </div>
+                  <div class="col-md-6">
+                     <%= form.label :outdoor_count, "How many are Outdoors?", class: "form-label" %>
+                     <%= form.number_field :outdoor_count, class: "form-control", value: 0, min: 0 %>
+                     <div class="form-text text-muted small mt-1">Includes weatherproof IP67 housing.</div>
+                  </div>
+                </div>
               </div>
             </div>
 
-            <div class="section-title mt-4">1b. Property Profile</div>
-            
-            <div class="row g-3 mb-4">
-              <div class="col-md-6">
-                <%= form.label :building_type, "Property Type", class: "form-label" %>
-                <%= form.select :building_type, 
-                    ["Home / Residential", "Commercial / Office", "Industrial / Warehouse"], 
-                    {}, 
-                    class: "form-select form-select-lg" %>
-                
-                <div class="mt-3">
-                    <%= form.label :location, "Property Location / City", class: "form-label" %>
-                    <%= form.text_field :location, class: "form-control", placeholder: "e.g. Westlands, Nairobi", required: true %>
-                    <div class="form-text text-muted small">Required for risk assessment logic.</div>
-                </div>
+            <div class="section-card">
+              <div class="section-card-header">
+                <h5 class="section-title-text">
+                  <i class="bi bi-building section-title-icon"></i> 2. Property Profile
+                </h5>
               </div>
-              
-              <div class="col-md-6">
-                <%= form.label :floors, "Building Height (Floors)", class: "form-label" %>
-                <%= form.number_field :floors, 
-                    class: "form-control form-control-lg", 
-                    value: 1, 
-                    min: 1 %>
-                <div class="form-text text-muted small mb-3">
-                  <i class="bi bi-arrow-up-circle"></i> Affects vertical cabling costs.
-                </div>
-
-                <%= form.label :timeline, "Installation Urgency", class: "form-label" %>
-                <%= form.select :timeline, 
-                    [
-                      ["Immediately (High Priority)", "immediate"], 
-                      ["Within 2 Weeks", "2_weeks"], 
-                      ["Next Month", "1_month"], 
-                      ["Just Budgeting", "planning"]
-                    ], 
-                    { prompt: "Select Timeline..." }, 
-                    class: "form-select" %>
-              </div>
-            </div>
-
-            <div class="section-title mt-4">2. Usage & Storage</div>
-            
-            <div class="row g-3 mb-4">
-                <div class="col-md-6">
-                    <%= form.label :purpose, "Primary Security Goal", class: "form-label" %>
-                    <%= form.select :purpose, 
-                        ["Theft Prevention", "Staff Monitoring", "Perimeter Defense", "Remote Viewing Only"], 
-                        { prompt: "Select a reason..." }, 
+              <div class="card-body p-4">
+                <div class="row g-4">
+                  <div class="col-md-6">
+                    <%= form.label :building_type, "Property Type", class: "form-label" %>
+                    <%= form.select :building_type, 
+                        ["Home / Residential", "Commercial / Office", "Industrial / Warehouse"], 
+                        {}, 
                         class: "form-select" %>
-                </div>
-                <div class="col-md-6">
-                    <%= form.label :recording_days, "Recording Retention", class: "form-label" %>
-                    <%= form.select :recording_days, 
-                        [["Standard (7 Days)", 7], ["Business (14 Days)", 14], ["Extended (30 Days)", 30]], 
-                        {}, class: "form-select" %>
-                </div>
-            </div>
-
-            <div class="section-title mt-4">3. Hardware Extras</div>
-            
-            <div class="row g-3 mb-4">
-              <div class="col-6">
-                <div class="option-card p-3 bg-light h-100 d-flex align-items-center">
-                  <div class="form-check w-100">
-                    <%= form.check_box :monitor, class: "form-check-input", style: "transform: scale(1.3); margin-right: 10px;" %>
-                    <%= form.label :monitor, class: "form-check-label fw-bold cursor-pointer" do %>
-                      Include Monitor <br>
-                      <span class="text-muted small fw-normal">19-inch Surveillance Screen</span>
-                    <% end %>
                   </div>
-                </div>
-              </div>
-              
-              <div class="col-6">
-                <div class="option-card p-3 bg-light h-100 d-flex align-items-center">
-                  <div class="form-check w-100">
-                    <%= form.check_box :ups, class: "form-check-input", style: "transform: scale(1.3); margin-right: 10px;" %>
-                    <%= form.label :ups, class: "form-check-label fw-bold cursor-pointer" do %>
-                      Power Backup <br>
-                      <span class="text-muted small fw-normal">650VA UPS Battery</span>
-                    <% end %>
+                  <div class="col-md-6">
+                    <%= form.label :location, "Property Location", class: "form-label" %>
+                    <%= form.text_field :location, class: "form-control", placeholder: "e.g. Westlands, Nairobi", required: true %>
+                  </div>
+                  
+                  <div class="col-md-6">
+                    <%= form.label :floors, "Building Height (Floors)", class: "form-label" %>
+                    <%= form.number_field :floors, class: "form-control", value: 1, min: 1 %>
+                    <div class="form-text text-muted small mt-1">Affects cabling & labor costs.</div>
+                  </div>
+
+                  <div class="col-md-6">
+                    <%= form.label :timeline, "Installation Urgency", class: "form-label" %>
+                    <%= form.select :timeline, 
+                        [
+                          ["Within 48 Hours (Urgent)", "immediate"], 
+                          ["Within 1-2 Weeks", "2_weeks"], 
+                          ["Next Month", "1_month"], 
+                          ["Just Budgeting / Planning", "planning"]
+                        ], 
+                        { prompt: "When do you need this?" }, 
+                        class: "form-select" %>
                   </div>
                 </div>
               </div>
             </div>
 
-            <hr class="my-5" style="opacity: 0.1;">
-            
-            <div class="row g-3">
-              <div class="col-md-12">
-                <%= form.label :name, "Your Full Name", class: "form-label fw-bold small text-uppercase" %>
-                <%= form.text_field :name, class: "form-control form-control-lg bg-light border-0", placeholder: "John Doe" %>
+            <div class="section-card">
+              <div class="section-card-header">
+                <h5 class="section-title-text">
+                  <i class="bi bi-hdd-network section-title-icon"></i> 3. Storage & Extras
+                </h5>
               </div>
-              <div class="col-md-6">
-                <%= form.label :email, "Email Address", class: "form-label" %>
-                <%= form.email_field :email, class: "form-control", placeholder: "client@company.com" %>
-              </div>
-              <div class="col-md-6">
-                <%= form.label :whatsapp_number, "WhatsApp Number", class: "form-label" %>
-                <%= form.text_field :whatsapp_number, class: "form-control", required: true, placeholder: "0722 000 000" %>
+              <div class="card-body p-4">
+                <div class="row g-4 mb-4">
+                   <div class="col-md-6">
+                      <%= form.label :purpose, "Primary Goal", class: "form-label" %>
+                      <%= form.select :purpose, 
+                          ["Theft Prevention", "Staff Monitoring", "Perimeter Defense", "Remote Viewing"], 
+                          { prompt: "Select goal..." }, 
+                          class: "form-select" %>
+                   </div>
+                   <div class="col-md-6">
+                      <%= form.label :recording_days, "Recording Retention", class: "form-label" %>
+                      <%= form.select :recording_days, 
+                          [["Standard (7 Days)", 7], ["Business (14 Days)", 14], ["Extended (30 Days)", 30]], 
+                          {}, class: "form-select" %>
+                   </div>
+                </div>
+
+                <label class="form-label mb-2 d-block">Recommended Hardware</label>
+                <div class="row g-3">
+                  <div class="col-sm-6">
+                    <div class="option-card p-3 h-100 d-flex align-items-center cursor-pointer">
+                      <div class="form-check w-100">
+                        <%= form.check_box :monitor, class: "form-check-input mt-2", style: "transform: scale(1.3); margin-right: 12px;" %>
+                        <%= form.label :monitor, class: "form-check-label fw-bold" do %>
+                          Include Monitor <br>
+                          <span class="text-muted small fw-normal">19-inch HD Surveillance Screen</span>
+                        <% end %>
+                      </div>
+                    </div>
+                  </div>
+                  
+                  <div class="col-sm-6">
+                    <div class="option-card p-3 h-100 d-flex align-items-center cursor-pointer">
+                      <div class="form-check w-100">
+                        <%= form.check_box :ups, class: "form-check-input mt-2", style: "transform: scale(1.3); margin-right: 12px;" %>
+                        <%= form.label :ups, class: "form-check-label fw-bold" do %>
+                          Power Backup (UPS) <br>
+                          <span class="text-muted small fw-normal">Keeps cameras on during outages</span>
+                        <% end %>
+                      </div>
+                    </div>
+                  </div>
+                </div>
               </div>
             </div>
 
-            <div class="mt-5 p-3 bg-light rounded border border-warning bg-opacity-10">
-              
-              <%= form.submit "Calculate Price Estimate", class: "btn btn-calculate w-100 btn-lg py-3 shadow mb-3" %>
-              
-              <div class="d-flex justify-content-center align-items-center gap-3 text-muted small">
-                <div class="d-flex align-items-center">
-                  <i class="bi bi-lock-fill text-success me-1" style="font-size: 1.2rem;"></i>
-                  <span>256-bit SSL Encrypted</span>
-                </div>
-                <div class="vr"></div>
-                <div class="d-flex align-items-center">
-                  <i class="bi bi-shield-check text-primary me-1" style="font-size: 1.2rem;"></i>
-                  <span>Privacy Guaranteed</span>
-                </div>
+            <div class="section-card border-top-0" style="box-shadow: 0 10px 30px rgba(0,0,0,0.08);">
+              <div class="section-card-header bg-light">
+                <h5 class="section-title-text text-dark">
+                  <i class="bi bi-person-check-fill section-title-icon"></i> Where should we send the estimate?
+                </h5>
               </div>
-              
-              <div class="text-center mt-2" style="font-size: 0.75rem; color: #6c757d;">
-                <i class="bi bi-info-circle"></i> We never share your location data with third parties.
+              <div class="card-body p-4">
+                <div class="row g-3">
+                  <div class="col-md-12">
+                    <%= form.label :name, "Your Full Name", class: "form-label" %>
+                    <%= form.text_field :name, class: "form-control", placeholder: "e.g. Abdulmalik / John" %>
+                  </div>
+                  <div class="col-md-6">
+                    <%= form.label :email, "Email Address", class: "form-label" %>
+                    <%= form.email_field :email, class: "form-control", placeholder: "name@example.com" %>
+                  </div>
+                  <div class="col-md-6">
+                    <%= form.label :whatsapp_number, "WhatsApp Number", class: "form-label" %>
+                    <%= form.text_field :whatsapp_number, class: "form-control", required: true, placeholder: "07..." %>
+                    <div class="small text-success mt-1">
+                      <i class="bi bi-lock-fill"></i> Used only to send your quote. No spam.
+                    </div>
+                  </div>
+                </div>
+
+                <div class="mt-4 pt-2">
+                  <%= form.submit "Get My Price Estimate", class: "btn btn-calculate w-100 btn-lg py-3 shadow" %>
+                  
+                  <div class="text-center mt-3 text-muted small">
+                    <i class="bi bi-shield-check text-primary me-1"></i> 
+                    Your data is encrypted and secure.
+                  </div>
+                </div>
               </div>
             </div>
 
           <% end %>
-        </div>
       </div>
       
     </div>
