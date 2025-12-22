@@ -65,18 +65,41 @@ body {
 
   <body class="d-flex flex-column min-vh-100">
 
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark mb-0 py-3" style="background-color: #0e2a5c !important;">
-      <div class="container">
-        <a class="navbar-brand fw-bold" href="/">
-          <i class="bi bi-shield-lock-fill me-2"></i>Urban Eye
-        </a>
-        
-        <div class="d-flex gap-3">
-          <%= link_to "Get Estimate", root_path, class: "btn btn-danger btn-sm fw-bold" %>
-          <%= link_to "All Services", services_path, class: "btn btn-outline-light btn-sm" %>
-        </div>
-      </div>
-    </nav>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark py-2">
+  <div class="container-fluid">
+    
+    <a class="navbar-brand d-flex align-items-center" href="#">
+      <img src="path/to/shield-icon.png" width="30" height="30" class="me-2" alt="Logo">
+      <span class="fw-bold">Urban Eye</span>
+    </a>
+
+    <div class="d-flex align-items-center">
+      
+      <a href="/estimate" class="btn btn-danger btn-sm me-2 fw-bold">
+        Get Estimate
+      </a>
+
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarContent">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+    </div>
+
+    <div class="collapse navbar-collapse" id="navbarContent">
+      <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+        <li class="nav-item">
+          <a class="nav-link active" href="#">All Services</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#">About Us</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#">Contact</a>
+        </li>
+      </ul>
+    </div>
+    
+  </div>
+</nav>
     
     <% if system_admin_signed_in? %>
       <nav class="navbar navbar-dark bg-dark px-4 mb-4 shadow-sm">
@@ -148,12 +171,10 @@ body {
       </div>
     </footer>
 
-   <a href="https://wa.me/254111770786?text=Hi%20Urban%20Eye,%20I%20saw%20your%20website%20and%20need%20a%20security%20quote." 
-   class="btn btn-success rounded-circle shadow-lg d-flex align-items-center justify-content-center" 
-   style="position: fixed; bottom: 20px; right: 20px; width: 60px; height: 60px; z-index: 1000; transition: transform 0.3s;"
-   onmouseover="this.style.transform='scale(1.1)'" 
-   onmouseout="this.style.transform='scale(1)'">
-  <i class="bi bi-whatsapp fs-2 text-white"></i>
+   <a href="https://wa.me/254111770786" target="_blank" 
+   class="position-fixed bottom-0 end-0 m-3 d-flex align-items-center justify-content-center bg-success text-white rounded-circle shadow"
+   style="width: 60px; height: 60px; z-index: 1050; text-decoration: none;">
+  <i class="bi bi-whatsapp fs-3"></i> 
 </a>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
