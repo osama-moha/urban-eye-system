@@ -68,16 +68,14 @@ body {
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark py-2">
   <div class="container-fluid">
     
-    <a class="navbar-brand d-flex align-items-center" href="#">
-      <img src="path/to/shield-icon.png" width="30" height="30" class="me-2" alt="Logo">
+    <%= link_to root_path, class: "navbar-brand d-flex align-items-center" do %>
+      <i class="bi bi-shield-lock-fill me-2"></i>
       <span class="fw-bold">Urban Eye</span>
-    </a>
+    <% end %>
 
-    <div class="d-flex align-items-center">
+    <div class="d-flex align-items-center order-lg-last">
       
-      <a href="/estimate" class="btn btn-danger btn-sm me-2 fw-bold">
-        Get Estimate
-      </a>
+      <%= link_to "Get Estimate", root_path, class: "btn btn-danger btn-sm me-2 fw-bold" %>
 
       <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarContent">
         <span class="navbar-toggler-icon"></span>
@@ -85,41 +83,41 @@ body {
     </div>
 
     <div class="collapse navbar-collapse" id="navbarContent">
-      <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+      <ul class="navbar-nav ms-auto mb-2 mb-lg-0 me-3">
         <li class="nav-item">
-  <%= link_to "All Services", root_path(anchor: "services"), class: "nav-link", data: { turbo: false } %>
-</li>
-        <li class="nav-item">
-          <a class="nav-link" href="#">About Us</a>
+          <%= link_to "All Services", root_path(anchor: "services"), class: "nav-link", data: { turbo: false } %>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="#">Contact</a>
+          <a class="nav-link" href="#about">About Us</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#contact">Contact</a>
         </li>
       </ul>
     </div>
     
   </div>
 </nav>
-    
-    <% if system_admin_signed_in? %>
-      <nav class="navbar navbar-dark bg-dark px-4 mb-4 shadow-sm">
-        <div class="container-fluid">
-          <span class="navbar-brand mb-0 h1 fw-bold" style="font-size: 1rem;">
-            <i class="bi bi-shield-lock-fill me-2"></i>Urban Eye System
-          </span>
-          
-          <div class="d-flex align-items-center gap-3">
-            <span class="text-white-50 small">
-              Signed in as: <strong><%= current_system_admin.email %></strong>
-            </span>
-            
-            <%= link_to destroy_system_admin_session_path, data: { turbo_method: :delete }, class: "btn btn-danger btn-sm py-1 px-3" do %>
-              Log Out
-            <% end %>
-          </div>
-        </div>
-      </nav>
-    <% end %>
+
+<% if system_admin_signed_in? %>
+  <nav class="navbar navbar-dark bg-dark px-4 mb-4 shadow-sm">
+    <div class="container-fluid">
+      <span class="navbar-brand mb-0 h1 fw-bold" style="font-size: 1rem;">
+        <i class="bi bi-shield-lock-fill me-2"></i>Urban Eye System
+      </span>
+      
+      <div class="d-flex align-items-center gap-3">
+        <span class="text-white-50 small">
+          Signed in as: <strong><%= current_system_admin.email %></strong>
+        </span>
+        
+        <%= link_to destroy_system_admin_session_path, data: { turbo_method: :delete }, class: "btn btn-danger btn-sm py-1 px-3" do %>
+          Log Out
+        <% end %>
+      </div>
+    </div>
+  </nav>
+<% end %>
 
     <div class="flex-grow-1">
       <%= yield %>
