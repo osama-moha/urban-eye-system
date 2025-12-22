@@ -17,6 +17,8 @@ Rails.application.routes.draw do
   # THIS IS THE MISSING LINE THAT FIXES YOUR ERROR:
   get 'services', to: 'pages#services'
 
+  get 'about', to: 'pages#about'
+
   # Redirect old/broken links back to the form
   get '/quotes', to: redirect('/quotes/new')
 
