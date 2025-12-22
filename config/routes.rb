@@ -1,24 +1,23 @@
 Rails.application.routes.draw do
-  get "pages/services"
   # --- 1. System Admin & Login ---
   devise_for :system_admins
 
   namespace :admin do
     resources :leads
-    
     resources :quotes do
       member do
         patch :update_status 
       end
     end
-    
     root to: "leads#index"
   end
 
-  # --- 2. Public Side (The Fix) ---
+  # --- 2. Public Side ---
   
-  # Redirect anyone looking for a list of quotes back to the "New Quote" form
-  # This stops the "RoutingError" you saw in the logs
+  # THIS IS THE MISSING LINE THAT FIXES YOUR ERROR:
+  get 'services', to: 'pages#services'
+
+  # Redirect old/broken links back to the form
   get '/quotes', to: redirect('/quotes/new')
 
   resources :quotes, only: [:new, :create, :show]
