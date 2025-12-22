@@ -1,134 +1,337 @@
-<div class="container my-5">
-  
-  <div class="text-center mb-5">
-    <h5 class="text-muted text-uppercase ls-2">Estimated Investment</h5>
-    <h1 class="text-success display-3 fw-bold my-3">
-      <%= number_to_currency(@quote.total_amount, unit: "KES ", precision: 0) %>
-    </h1>
-    <p class="lead">
-      Or just <strong><%= number_to_currency((@quote.total_amount.to_i / 365), unit: "KES ", precision: 0) %>/day</strong>
-      <span class="badge bg-light text-dark border ms-2">Less than lunch</span>
-    </p>
-  </div>
-
-  <div class="row justify-content-center">
-    <div class="col-md-8">
-      <div class="card shadow-lg border-0 text-center p-5 bg-white rounded-3">
-        <div class="mb-4">
-          <i class="bi bi-file-earmark-lock2-fill text-warning display-1"></i>
-        </div>
-        <h3 class="fw-bold mb-3">Unlock Your Technical Breakdown</h3>
-        <p class="text-muted mb-4">
-          To protect our proprietary system design, the full itemized list (camera models, DVR specs, and cabling plan) is locked.
-        </p>
-        <p class="mb-4">
-          <strong>Click below to receive the official PDF breakdown via WhatsApp immediately.</strong>
-        </p>
-        
-        <a href="https://wa.me/254757617084?text=Hi, I just generated Quote #<%= @quote.id %> for KES <%= @quote.total_amount %>. Can I see the full breakdown?" class="btn btn-success btn-lg w-100 py-3 fw-bold shadow-sm hover-lift">
-          <i class="bi bi-whatsapp me-2"></i> Get Full Breakdown on WhatsApp
-        </a>
-        
-        <div class="mt-3 text-muted small">
-          <i class="bi bi-shield-check"></i> No spam. Direct connection to a Security Engineer.
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <div class="mt-5 pt-5 border-top">
-    <div class="text-center mb-5">
-      <h3 class="fw-bold text-dark">Complete Your Security Grid</h3>
-      <p class="text-muted">Urban Eye is your single point of contact for integrated facility systems.</p>
+<% if current_system_admin %>
+  <div class="container mt-5 mb-5">
+    <div class="alert alert-info d-print-none text-center">
+      <i class="bi bi-shield-lock-fill"></i> <strong>Admin Mode:</strong> You are seeing the full breakdown. Customers will only see the "Locked" version.
     </div>
 
-    <div class="row g-4">
+    <div class="card shadow-lg border-0" style="max-width: 850px; margin: auto; position: relative; overflow: hidden;">
       
-      <div class="col-12"><h5 class="text-uppercase text-danger border-bottom pb-2">Physical Security & Access</h5></div>
+      <div class="pdf-watermark">
+        <%= image_tag "logo.png" %>
+      </div>
 
-      <div class="col-md-4 col-6">
-        <div class="p-3 border rounded h-100 text-center bg-white shadow-sm hover-card">
-          <i class="bi bi-fingerprint text-danger display-6 mb-2"></i>
-          <h6 class="fw-bold">Access Control</h6>
-          <a href="https://wa.me/254757617084?text=Hi, regarding Quote #<%= @quote.id %>. I am interested in Access Control." class="btn btn-sm btn-outline-dark w-100 stretched-link">Inquire</a>
+      <div class="quote-header" style="display: flex; justify-content: space-between; align-items: flex-start; border-bottom: 2px solid #eaeaea; padding: 40px 40px 20px 40px; position: relative; z-index: 2; background: white;">
+        <div style="flex: 0 0 250px;">
+          <%= image_tag "logo.png", class: "brand-logo", style: "width: 100%; height: auto; display: block;" %>
+        </div>
+
+        <div style="flex: 1; text-align: right; padding-left: 20px;">
+          <h1 class="doc-title" style="color: #003366; font-weight: 800; font-size: 32px; margin: 0 0 10px 0; text-transform: uppercase;">Quotation</h1>
+          <table style="float: right; text-align: right; font-size: 14px;">
+            <tr>
+              <td style="color: #666; padding-right: 10px;">Date:</td>
+              <td style="font-weight: bold; color: #000;"><%= @quote.created_at.strftime("%d/%m/%Y") %></td>
+            </tr>
+            <tr>
+              <td style="color: #666; padding-right: 10px;">Ref #:</td>
+              <td style="font-weight: bold; color: #000;">UES/2025/QT-<%= @quote.id.to_s.rjust(4, '0') %></td>
+            </tr>
+            <tr>
+              <td style="color: #666; padding-right: 10px;">To:</td>
+              <td style="font-weight: bold; color: #000;"><%= @quote.email.presence || "Valued Client" %></td>
+            </tr>
+          </table>
         </div>
       </div>
 
-      <div class="col-md-4 col-6">
-        <div class="p-3 border rounded h-100 text-center bg-white shadow-sm hover-card">
-          <i class="bi bi-door-open text-danger display-6 mb-2"></i>
-          <h6 class="fw-bold">Video Intercoms</h6>
-          <a href="https://wa.me/254757617084?text=Hi, regarding Quote #<%= @quote.id %>. I am interested in Video Intercoms." class="btn btn-sm btn-outline-dark w-100 stretched-link">Inquire</a>
+      <div class="card-body p-5" style="position: relative; z-index: 1;">
+        
+        <div class="row mb-4">
+          <div class="col-md-12">
+            <div class="alert alert-light border-start border-5 border-primary shadow-sm p-4" style="border-color: #003366 !important;">
+              <div class="d-flex justify-content-between align-items-center">
+                <div>
+                  <h5 class="fw-bold mb-1" style="color: #003366;">
+                    <i class="bi bi-shield-check text-success"></i> Peace of Mind Investment
+                  </h5>
+                  <p class="text-muted mb-0 small">
+                    Based on a 1-year operational cycle, this security grid costs just:
+                  </p>
+                </div>
+                <div class="text-end">
+                  <h2 class="text-success fw-bold mb-0">
+                    KES <%= number_with_delimiter((@quote.total_amount.to_i / 365).to_i) %>/day
+                  </h2>
+                  <span class="badge bg-success bg-opacity-10 text-success">Less than lunch</span>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
-      </div>
 
-      <div class="col-md-4 col-6">
-        <div class="p-3 border rounded h-100 text-center bg-white shadow-sm hover-card">
-          <i class="bi bi-bell-fill text-danger display-6 mb-2"></i>
-          <h6 class="fw-bold">Smart Alarms</h6>
-          <a href="https://wa.me/254757617084?text=Hi, regarding Quote #<%= @quote.id %>. I am interested in Ajax Alarms." class="btn btn-sm btn-outline-dark w-100 stretched-link">Inquire</a>
+        <div class="mt-4 mb-4">
+          <h6 class="fw-bold text-uppercase border-bottom pb-2" style="color: #003366;">
+            <i class="bi bi-geo-alt-fill"></i> Site-Specific Strategy: <%= @quote.building_type %>
+          </h6>
+          <div class="bg-white p-3 border rounded">
+            <p class="small text-muted mb-2">
+              Based on your location in <strong><%= @quote.location.presence || "Nairobi" %></strong>, we have configured this system to address:
+            </p>
+            <ul class="small mb-0 text-dark">
+              <% if @quote.building_type == "Commercial / Office" %>
+                <li><strong>Internal Shrinkage:</strong> Coverage of POS and stock areas to reduce theft.</li>
+                <li><strong>Liability Defense:</strong> 14+ day recording retention for dispute resolution.</li>
+              <% elsif @quote.building_type == "Industrial / Warehouse" %>
+                <li><strong>Perimeter Control:</strong> Long-range monitoring for unlit yards/gates.</li>
+                <li><strong>Safety Compliance:</strong> Monitoring of loading bays and hazardous zones.</li>
+              <% else %>
+                <li><strong>Perimeter Defense:</strong> Deterrence of opportunistic entry at main gates.</li>
+                <li><strong>Domestic Oversight:</strong> Clear monitoring of service areas and staff.</li>
+              <% end %>
+            </ul>
+          </div>
         </div>
-      </div>
-
-      <div class="col-12 mt-4"><h5 class="text-uppercase text-primary border-bottom pb-2">Network Infrastructure</h5></div>
-
-      <div class="col-md-4 col-6">
-        <div class="p-3 border rounded h-100 text-center bg-white shadow-sm hover-card">
-          <i class="bi bi-hdd-network text-primary display-6 mb-2"></i>
-          <h6 class="fw-bold">Structured Cabling</h6>
-          <a href="https://wa.me/254757617084?text=Hi, regarding Quote #<%= @quote.id %>. I am interested in Cabling." class="btn btn-sm btn-outline-dark w-100 stretched-link">Inquire</a>
+        
+        <div class="text-center mb-4">
+          <h5 class="fw-bold bg-light p-2 border rounded">
+            <%= @quote.camera_count %>-CAMERA SYSTEM (SUPPLY & INSTALL)
+          </h5>
         </div>
-      </div>
 
-      <div class="col-md-4 col-6">
-        <div class="p-3 border rounded h-100 text-center bg-white shadow-sm hover-card">
-          <i class="bi bi-router text-primary display-6 mb-2"></i>
-          <h6 class="fw-bold">Enterprise WiFi</h6>
-          <a href="https://wa.me/254757617084?text=Hi, regarding Quote #<%= @quote.id %>. I am interested in Enterprise WiFi." class="btn btn-sm btn-outline-dark w-100 stretched-link">Inquire</a>
+        <table class="table table-bordered align-middle" style="background: transparent !important;">
+          <thead class="table-dark text-center">
+            <tr>
+              <th scope="col" style="width: 55%;">Item Description</th>
+              <th scope="col" style="width: 15%;">Qty</th>
+              <th scope="col" style="width: 30%;">Total (KES)</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>
+                <strong>Hikvision Turbo HD Hardware Kit</strong>
+                <ul class="small text-muted mb-0 mt-1 ps-3">
+                  <li><%= @quote.camera_count %>x Hikvision HD Cameras (2MP/4MP)</li>
+                  <li>4/8/16 Channel DVR (Remote View Ready)</li>
+                  <li><strong><%= @quote.recording_days %>-Day Storage Drive</strong></li>
+                  <li>Central Power Supply Unit (12V)</li>
+                  <% if @quote.monitor? %><li>19-inch Surveillance Monitor included</li><% end %>
+                  <% if @quote.ups? %><li>650VA Power Backup included</li><% end %>
+                </ul>
+              </td>
+              <td class="text-center">1 Set</td>
+              <td class="text-end fw-bold">
+                <%= number_to_currency((@quote.total_amount * 0.75), unit: "", precision: 0) %>
+              </td>
+            </tr>
+
+            <tr>
+              <td>
+                <strong>Cabling & Installation Infrastructure</strong>
+                <ul class="small text-muted mb-0 mt-1 ps-3">
+                  <li>Cat6 UTP Cabling (Premium Copper)</li>
+                  <li>Video Baluns & DC Power Connectors</li>
+                  <li>Junction Boxes & Mounting Accessories</li>
+                  <li>Trunking, Conduit & Consumables</li>
+                </ul>
+              </td>
+              <td class="text-center">1 Lot</td>
+              <td class="text-end fw-bold">
+                 <%= number_to_currency((@quote.total_amount * 0.10), unit: "", precision: 0) %>
+              </td>
+            </tr>
+
+            <tr>
+              <td>
+                <strong>Professional Labor & Configuration</strong>
+                <ul class="small text-muted mb-0 mt-1 ps-3">
+                  <li>Drilling & Mounting across <%= @quote.floors %> floors</li>
+                  <li>Cable laying & Termination</li>
+                  <li>DVR Configuration & Mobile App Setup</li>
+                  <li>User Training</li>
+                </ul>
+              </td>
+              <td class="text-center">1 Lot</td>
+              <td class="text-end fw-bold">
+                 <%= number_to_currency((@quote.total_amount * 0.15), unit: "", precision: 0) %>
+              </td>
+            </tr>
+
+            <tr style="border-top: 3px solid #000;">
+              <td colspan="3" style="padding: 0;">
+                <div class="print-color" style="background-color: #003366 !important; -webkit-print-color-adjust: exact; color: white; padding: 20px; display: flex; justify-content: center; align-items: center; gap: 20px;">
+                  <span style="font-size: 18px; text-transform: uppercase; letter-spacing: 1px; font-weight: normal;">
+                    Grand Total (KES):
+                  </span>
+                  <span style="font-size: 32px; font-weight: 800;">
+                    <%= number_to_currency(@quote.total_amount, unit: "KES ", precision: 0) %>
+                  </span>
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+
+        <div class="mt-5 p-4 bg-light rounded border keep-together">
+          <h6 class="fw-bold text-decoration-underline">Terms & Conditions</h6>
+          <ol class="small text-muted mb-0 ps-3">
+            <li><strong>Payment:</strong> 70% Deposit required to commence work. 30% on completion.</li>
+            <li><strong>Validity:</strong> Quote valid for 14 Days.</li>
+            <li><strong>Warranty:</strong> 1 Year Warranty on Hardware (Cameras/DVR).</li>
+            <li><strong>Note:</strong> Final price may vary slightly after detailed site survey.</li>
+          </ol>
         </div>
-      </div>
 
-      <div class="col-md-4 col-6">
-        <div class="p-3 border rounded h-100 text-center bg-white shadow-sm hover-card">
-          <i class="bi bi-activity text-primary display-6 mb-2"></i>
-          <h6 class="fw-bold">Fiber Optics</h6>
-          <a href="https://wa.me/254757617084?text=Hi, regarding Quote #<%= @quote.id %>. I am interested in Fiber Optics." class="btn btn-sm btn-outline-dark w-100 stretched-link">Inquire</a>
+        <div class="mt-5" style="display: flex; justify-content: space-between; align-items: flex-end; padding: 0 10px;">
+          <div style="flex: 0 0 250px; text-align: left;">
+            <p class="small text-muted mb-1">Issued By:</p>
+            <div style="border-bottom: 1px solid #000; height: 60px; margin-bottom: 5px; position: relative;">
+              <span style="position: absolute; bottom: 5px; left: 0; font-family: 'cursive'; color: #003366; font-size: 14px;">
+                Urban Eye Security Admin
+              </span>
+            </div>
+            <p class="fw-bold small mb-0">Authorized Signature</p>
+          </div>
+          <div style="flex: 0 0 250px; text-align: left;">
+            <p class="small text-muted mb-1">Approved By (Client):</p>
+            <div style="border-bottom: 1px solid #000; height: 60px; margin-bottom: 5px;"></div>
+            <p class="fw-bold small mb-0">Signature & Date</p>
+          </div>
         </div>
-      </div>
 
-      <div class="col-12 mt-4"><h5 class="text-uppercase text-success border-bottom pb-2">Advanced Connectivity</h5></div>
-
-      <div class="col-md-4 col-6">
-        <div class="p-3 border rounded h-100 text-center bg-white shadow-sm hover-card">
-          <i class="bi bi-telephone-inbound text-success display-6 mb-2"></i>
-          <h6 class="fw-bold">VoIP Systems</h6>
-          <a href="https://wa.me/254757617084?text=Hi, regarding Quote #<%= @quote.id %>. I am interested in VoIP." class="btn btn-sm btn-outline-dark w-100 stretched-link">Inquire</a>
+        <div class="d-grid gap-2 d-md-flex justify-content-md-center mt-5 d-print-none">
+          <button onclick="window.print()" class="btn btn-dark btn-lg px-4">
+            <i class="bi bi-printer"></i> Print / Save PDF
+          </button>
         </div>
-      </div>
 
-      <div class="col-md-4 col-6">
-        <div class="p-3 border rounded h-100 text-center bg-white shadow-sm hover-card">
-          <i class="bi bi-reception-4 text-success display-6 mb-2"></i>
-          <h6 class="fw-bold">Signal Boosting</h6>
-          <a href="https://wa.me/254757617084?text=Hi, regarding Quote #<%= @quote.id %>. I am interested in Signal Boosting." class="btn btn-sm btn-outline-dark w-100 stretched-link">Inquire</a>
-        </div>
       </div>
-
-      <div class="col-md-4 col-6">
-        <div class="p-3 border rounded h-100 text-center bg-white shadow-sm hover-card">
-          <i class="bi bi-speaker text-success display-6 mb-2"></i>
-          <h6 class="fw-bold">Audio & Video</h6>
-          <a href="https://wa.me/254757617084?text=Hi, regarding Quote #<%= @quote.id %>. I am interested in Audio/Video." class="btn btn-sm btn-outline-dark w-100 stretched-link">Inquire</a>
-        </div>
-      </div>
-
     </div>
   </div>
-</div>
 
-<style>
-  /* Subtle hover effect for the service cards */
-  .hover-card { transition: transform 0.2s; }
-  .hover-card:hover { transform: translateY(-5px); border-color: #dc3545 !important; }
-  .hover-lift:hover { transform: translateY(-2px); }
-</style>
+<% else %>
+  <div class="container my-5">
+    
+    <div class="text-center mb-5">
+      <h5 class="text-muted text-uppercase ls-2">Estimated Investment</h5>
+      <h1 class="text-success display-3 fw-bold my-3">
+        <%= number_to_currency(@quote.total_amount, unit: "KES ", precision: 0) %>
+      </h1>
+      <p class="lead">
+        Or just <strong><%= number_to_currency((@quote.total_amount.to_i / 365), unit: "KES ", precision: 0) %>/day</strong>
+        <span class="badge bg-light text-dark border ms-2">Less than lunch</span>
+      </p>
+    </div>
+
+    <div class="row justify-content-center">
+      <div class="col-md-8">
+        <div class="card shadow-lg border-0 text-center p-5 bg-white rounded-3">
+          <div class="mb-4">
+            <i class="bi bi-file-earmark-lock2-fill text-warning display-1"></i>
+          </div>
+          <h3 class="fw-bold mb-3">Unlock Your Technical Breakdown</h3>
+          <p class="text-muted mb-4">
+            To protect our proprietary system design, the full itemized list (camera models, DVR specs, and cabling plan) is locked.
+          </p>
+          <p class="mb-4">
+            <strong>Click below to receive the official PDF breakdown via WhatsApp immediately.</strong>
+          </p>
+          
+          <a href="https://wa.me/254757617084?text=Hi, I just generated Quote Ref <%= @quote.id %> for KES <%= @quote.total_amount %>. Can I see the full breakdown?" class="btn btn-success btn-lg w-100 py-3 fw-bold shadow-sm hover-lift">
+            <i class="bi bi-whatsapp me-2"></i> Get Full Breakdown on WhatsApp
+          </a>
+          
+          <div class="mt-3 text-muted small">
+            <i class="bi bi-shield-check"></i> No spam. Direct connection to a Security Engineer.
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="mt-5 pt-5 border-top">
+      <div class="text-center mb-5">
+        <h3 class="fw-bold text-dark">Complete Your Security Grid</h3>
+        <p class="text-muted">Urban Eye is your single point of contact for integrated facility systems.</p>
+      </div>
+
+      <div class="row g-4">
+        
+        <div class="col-12"><h5 class="text-uppercase text-danger border-bottom pb-2">Physical Security & Access</h5></div>
+
+        <div class="col-md-4 col-6">
+          <div class="p-3 border rounded h-100 text-center bg-white shadow-sm hover-card">
+            <i class="bi bi-fingerprint text-danger display-6 mb-2"></i>
+            <h6 class="fw-bold">Access Control</h6>
+            <a href="https://wa.me/254757617084?text=Hi, regarding Quote Ref <%= @quote.id %>. I am interested in Access Control." class="btn btn-sm btn-outline-dark w-100 stretched-link">Inquire</a>
+          </div>
+        </div>
+
+        <div class="col-md-4 col-6">
+          <div class="p-3 border rounded h-100 text-center bg-white shadow-sm hover-card">
+            <i class="bi bi-door-open text-danger display-6 mb-2"></i>
+            <h6 class="fw-bold">Video Intercoms</h6>
+            <a href="https://wa.me/254757617084?text=Hi, regarding Quote Ref <%= @quote.id %>. I am interested in Video Intercoms." class="btn btn-sm btn-outline-dark w-100 stretched-link">Inquire</a>
+          </div>
+        </div>
+
+        <div class="col-md-4 col-6">
+          <div class="p-3 border rounded h-100 text-center bg-white shadow-sm hover-card">
+            <i class="bi bi-bell-fill text-danger display-6 mb-2"></i>
+            <h6 class="fw-bold">Smart Alarms</h6>
+            <a href="https://wa.me/254757617084?text=Hi, regarding Quote Ref <%= @quote.id %>. I am interested in Ajax Alarms." class="btn btn-sm btn-outline-dark w-100 stretched-link">Inquire</a>
+          </div>
+        </div>
+
+        <div class="col-12 mt-4"><h5 class="text-uppercase text-primary border-bottom pb-2">Network Infrastructure</h5></div>
+
+        <div class="col-md-4 col-6">
+          <div class="p-3 border rounded h-100 text-center bg-white shadow-sm hover-card">
+            <i class="bi bi-hdd-network text-primary display-6 mb-2"></i>
+            <h6 class="fw-bold">Structured Cabling</h6>
+            <a href="https://wa.me/254757617084?text=Hi, regarding Quote Ref <%= @quote.id %>. I am interested in Cabling." class="btn btn-sm btn-outline-dark w-100 stretched-link">Inquire</a>
+          </div>
+        </div>
+
+        <div class="col-md-4 col-6">
+          <div class="p-3 border rounded h-100 text-center bg-white shadow-sm hover-card">
+            <i class="bi bi-router text-primary display-6 mb-2"></i>
+            <h6 class="fw-bold">Enterprise WiFi</h6>
+            <a href="https://wa.me/254757617084?text=Hi, regarding Quote Ref <%= @quote.id %>. I am interested in Enterprise WiFi." class="btn btn-sm btn-outline-dark w-100 stretched-link">Inquire</a>
+          </div>
+        </div>
+
+        <div class="col-md-4 col-6">
+          <div class="p-3 border rounded h-100 text-center bg-white shadow-sm hover-card">
+            <i class="bi bi-activity text-primary display-6 mb-2"></i>
+            <h6 class="fw-bold">Fiber Optics</h6>
+            <a href="https://wa.me/254757617084?text=Hi, regarding Quote Ref <%= @quote.id %>. I am interested in Fiber Optics." class="btn btn-sm btn-outline-dark w-100 stretched-link">Inquire</a>
+          </div>
+        </div>
+
+        <div class="col-12 mt-4"><h5 class="text-uppercase text-success border-bottom pb-2">Advanced Connectivity</h5></div>
+
+        <div class="col-md-4 col-6">
+          <div class="p-3 border rounded h-100 text-center bg-white shadow-sm hover-card">
+            <i class="bi bi-telephone-inbound text-success display-6 mb-2"></i>
+            <h6 class="fw-bold">VoIP Systems</h6>
+            <a href="https://wa.me/254757617084?text=Hi, regarding Quote Ref <%= @quote.id %>. I am interested in VoIP." class="btn btn-sm btn-outline-dark w-100 stretched-link">Inquire</a>
+          </div>
+        </div>
+
+        <div class="col-md-4 col-6">
+          <div class="p-3 border rounded h-100 text-center bg-white shadow-sm hover-card">
+            <i class="bi bi-reception-4 text-success display-6 mb-2"></i>
+            <h6 class="fw-bold">Signal Boosting</h6>
+            <a href="https://wa.me/254757617084?text=Hi, regarding Quote Ref <%= @quote.id %>. I am interested in Signal Boosting." class="btn btn-sm btn-outline-dark w-100 stretched-link">Inquire</a>
+          </div>
+        </div>
+
+        <div class="col-md-4 col-6">
+          <div class="p-3 border rounded h-100 text-center bg-white shadow-sm hover-card">
+            <i class="bi bi-speaker text-success display-6 mb-2"></i>
+            <h6 class="fw-bold">Audio & Video</h6>
+            <a href="https://wa.me/254757617084?text=Hi, regarding Quote Ref <%= @quote.id %>. I am interested in Audio/Video." class="btn btn-sm btn-outline-dark w-100 stretched-link">Inquire</a>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+  
+  <style>
+    /* Subtle hover effect for the service cards */
+    .hover-card { transition: transform 0.2s; }
+    .hover-card:hover { transform: translateY(-5px); border-color: #dc3545 !important; }
+    .hover-lift:hover { transform: translateY(-2px); }
+  </style>
+<% end %>
