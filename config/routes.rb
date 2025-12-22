@@ -1,13 +1,12 @@
 Rails.application.routes.draw do
+  # --- 1. System Admin & Login ---
   devise_for :system_admins
-  # --- Admin Panel ---
+
   namespace :admin do
     resources :leads
     
-    # Updated resources for Quotes to handle Status and Excel
     resources :quotes do
       member do
-        # Allows you to click a button to change status (Pending/Paid/Lost)
         patch :update_status 
       end
     end
@@ -15,10 +14,17 @@ Rails.application.routes.draw do
     root to: "leads#index"
   end
 
-  # --- Public Side ---
+  # --- 2. Public Side (The Fix) ---
+  
+  # Redirect anyone looking for a list of quotes back to the "New Quote" form
+  # This stops the "RoutingError" you saw in the logs
+  get '/quotes', to: redirect('/quotes/new')
+
   resources :quotes, only: [:new, :create, :show]
 
+  # Make the "Get a Quote" form the homepage
   root "quotes#new"
 
+  # Health Check
   get "up" => "rails/health#show", as: :rails_health_check
 end
