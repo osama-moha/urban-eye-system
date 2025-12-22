@@ -11,22 +11,23 @@
     min-height: 100vh;
   }
 
-  /* Premium Header Block */
+  /* Premium Header Block - INCREASED HEIGHT HERE */
   body::before {
     content: "";
     position: absolute;
     top: 0;
     left: 0;
     width: 100%;
-    height: 280px; /* Slightly shorter to let cards pop */
+    height: 450px; /* <--- CHANGED from 280px to 450px */
     background: linear-gradient(170deg, var(--brand-blue) 0%, #001a33 100%);
     z-index: -1;
+    /* Adjusted the angle slightly to ensure text coverage */
     clip-path: polygon(0 0, 100% 0, 100% 85%, 0% 100%);
   }
 
   /* Main Container Card (Background Wrapper) */
   .card-urban-wrapper {
-    background: transparent; /* Changed to transparent so inner cards stand out */
+    background: transparent;
     border: none;
   }
 
