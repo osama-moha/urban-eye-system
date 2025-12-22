@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  get "pages/services"
   # --- 1. System Admin & Login ---
   devise_for :system_admins
 

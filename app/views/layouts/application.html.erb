@@ -111,6 +111,19 @@
   </head>
 
   <body class="bg-light">
+
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark mb-0 py-3" style="background-color: #0e2a5c !important;">
+  <div class="container">
+    <a class="navbar-brand fw-bold" href="/">
+      <i class="bi bi-shield-lock-fill me-2"></i>Urban Eye
+    </a>
+    
+    <div class="d-flex gap-3">
+      <%= link_to "Get Estimate", root_path, class: "btn btn-danger btn-sm fw-bold" %>
+      <%= link_to "All Services", services_path, class: "btn btn-outline-light btn-sm" %>
+    </div>
+  </div>
+</nav>
     
     <% if system_admin_signed_in? %>
       <nav class="navbar navbar-dark bg-dark px-4 mb-4 shadow-sm">
