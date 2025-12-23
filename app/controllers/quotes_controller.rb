@@ -17,9 +17,13 @@ class QuotesController < ApplicationController
     @lead.name = quote_params[:name] if quote_params[:name].present?
     @lead.location = quote_params[:location] if quote_params[:location].present?
     
-    if quote_params[:building_type].present?
+    # --- FIX: Set "Interest" correctly for Subscriptions ---
+    if quote_params[:subscription] == "1"
+      @lead.property_type = "Starter Shield Package"
+    elsif quote_params[:building_type].present?
       @lead.property_type = quote_params[:building_type] 
     end
+    # -------------------------------------------------------
     
     @lead.save!
 
