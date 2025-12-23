@@ -300,3 +300,44 @@
     </div>
   </div>
 </div>
+
+<script>
+  document.addEventListener("DOMContentLoaded", function() {
+    const subCheckbox = document.getElementById("subscription_check");
+    
+    // The sections we want to hide/show
+    const configSection = document.querySelector(".card:has(input[name='quote[camera_count]'])"); 
+    // ^ Note: If your HTML structure is different, you might need to add ID="camera-config" to the card div
+    
+    // The fields we need to auto-fill so the database doesn't crash
+    const cameraInput = document.querySelector("input[name='quote[camera_count]']");
+    const outdoorInput = document.querySelector("input[name='quote[outdoor_count]']");
+    
+    function toggleSubscriptionMode() {
+      if (subCheckbox.checked) {
+        // 1. HIDE the configuration section
+        // (We assume the config form is in the card immediately following the checkbox card)
+        // If this selector fails, add id="config-section" to your Camera Configuration card div
+        if(configSection) configSection.style.display = "none";
+        
+        // 2. AUTO-FILL required data so validation passes
+        if(cameraInput) cameraInput.value = "3"; // Default to 3 cams
+        if(outdoorInput) outdoorInput.value = "1";
+        
+      } else {
+        // SHOW sections again if unchecked
+        if(configSection) configSection.style.display = "block";
+        
+        // Clear values so user can type
+        if(cameraInput) cameraInput.value = "";
+        if(outdoorInput) outdoorInput.value = "";
+      }
+    }
+
+    // Run on click
+    subCheckbox.addEventListener("change", toggleSubscriptionMode);
+    
+    // Run on load (in case browser remembers checked state)
+    toggleSubscriptionMode();
+  });
+</script>
