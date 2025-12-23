@@ -6,7 +6,7 @@ class PriceCalculator
   COST_CAM_INDOOR  = 1500
   COST_CAM_OUTDOOR = 2000
   
-  # DVR Costs
+  # DVR Costs (Buying Price)
   COST_DVR_4CH  = 4200
   COST_DVR_8CH  = 6000
   COST_DVR_16CH = 11000
@@ -17,7 +17,7 @@ class PriceCalculator
   COST_HDD_2TB   = 6500
   COST_HDD_4TB   = 10500
 
-  # Power & Accessories
+  # Power Supply
   COST_PSU_SMALL = 1000
   COST_PSU_MED   = 2500
   COST_PSU_LARGE = 5000
@@ -28,7 +28,7 @@ class PriceCalculator
 
   # Infrastructure (Cables, Clips, Trunking)
   COST_INFRA_PER_CAM = 800 
-  COST_INFRA_BUFFER  = 2000 # Only for big jobs
+  COST_INFRA_BUFFER  = 2000 # Only added for big jobs
 
   # Labor (What you pay the technician)
   PAY_TECH_PER_CAM = 1000
@@ -42,7 +42,7 @@ class PriceCalculator
     @floors = floors.to_i
     @days = days.to_i
     
-    # Ensure these are treated as Booleans (True/False)
+    # STRICT Check: Ensure these are treated as Booleans
     @monitor = [true, "true", "1", 1].include?(monitor)
     @ups = [true, "true", "1", 1].include?(ups)
   end
@@ -58,7 +58,7 @@ class PriceCalculator
     
     raw_hardware = raw_cams + raw_central
 
-    # B. Extras (Monitor/UPS)
+    # B. Extras (Monitor/UPS) - Only add if strictly true
     raw_extras = 0
     raw_extras += COST_MONITOR if @monitor
     raw_extras += COST_UPS if @ups
@@ -68,25 +68,24 @@ class PriceCalculator
     raw_infra += COST_INFRA_BUFFER if @total > 8
 
     # D. Labor
-    # For small jobs (<=4), we assume easier transport
+    # Efficiency: Small jobs (<=4) cost less transport
     transport_cost = @total <= 4 ? 1500 : PAY_TRANSPORT
     
     raw_labor = (@total * PAY_TECH_PER_CAM) + transport_cost
     
-    # Add floor surcharge only if strictly necessary
+    # Add floor surcharge
     if @floors > 1
       raw_labor += (@floors - 1) * 500
     end
-
 
     # ------------------------------------------------
     # STEP 2: APPLY MARGIN (The Pricing Logic)
     # ------------------------------------------------
     
     # LOGIC: 
-    # 1-4 Cams: 20% Margin (To win home jobs)
-    # 5-8 Cams: 30% Margin (Standard job)
-    # 9+  Cams: 35% Margin (Corporate job complexity)
+    # 1-4 Cams: 20% Margin (Aggressive - win home jobs)
+    # 5-8 Cams: 30% Margin (Standard)
+    # 9+  Cams: 35% Margin (Corporate)
     
     if @total <= 4
       margin_percent = 0.20
@@ -101,19 +100,23 @@ class PriceCalculator
     sell_infra    = (raw_infra * (1 + margin_percent))
     sell_labor    = (raw_labor * (1 + margin_percent))
 
-    # Extras get a fixed, lower markup (don't overcharge for monitors)
+    # Extras get a fixed low markup (20%) always
     sell_extras   = (raw_extras * 1.20) 
 
-    # Rounding to clean numbers
+    # Rounding to clean numbers (Nearest 100)
     sell_hardware = round_up(sell_hardware + sell_extras)
     sell_infra    = round_up(sell_infra)
     sell_labor    = round_up(sell_labor)
 
     grand_total = sell_hardware + sell_infra + sell_labor
 
-    # Minimum Price Safety Net (Never go below 25k for a full kit)
-    if grand_total < 25000
-       grand_total = 25000
+    # Minimum Price Safety Net (Ensure we never lose money)
+    # 4-Cam Kit min price: 25k. 
+    # 1-Cam repair min price: 5k.
+    min_price = @total <= 4 ? 24000 : 35000
+    
+    if grand_total < min_price
+       grand_total = min_price
     end
 
     {
@@ -121,8 +124,12 @@ class PriceCalculator
         hardware_kit: sell_hardware,
         infrastructure: sell_infra,
         labor: sell_labor,
+        
+        # Helper text for the view
         dvr_type: get_dvr_name(@total),
-        hdd_size: get_hdd_name(@total, @days)
+        hdd_size: get_hdd_name(@total, @days),
+        monitor_included: @monitor ? "Yes" : "No",
+        ups_included: @ups ? "Yes" : "No"
       },
       total: grand_total
     }
@@ -141,8 +148,7 @@ class PriceCalculator
   end
 
   def get_hdd_cost(count, days)
-    # Smart logic: 4 cams + 7 days = 500GB (Save money)
-    # 4 cams + 14 days = 1TB
+    # Logic: 4 cams + 7 days = 500GB (Save money)
     if count <= 4 && days <= 7
       COST_HDD_500GB
     elsif count <= 8 && days <= 7
@@ -156,11 +162,11 @@ class PriceCalculator
   
   def get_hdd_name(count, days)
     if count <= 4 && days <= 7
-      "500GB HDD"
+      "500GB Surveillance HDD"
     elsif count <= 8 && days <= 7
-      "1TB HDD"
+      "1TB Surveillance HDD"
     else
-      "2TB/4TB HDD"
+      "2TB/4TB Surveillance HDD"
     end
   end
 
