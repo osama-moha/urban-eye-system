@@ -14,7 +14,7 @@ class PriceCalculator
   PSU_LARGE = 6000  
 
   # Monitor & UPS
-  MONITOR_PRICE = 4500 
+  MONITOR_PRICE = 3500 
   UPS_PRICE = 6500
 
   # --- 2. INFRASTRUCTURE PRICES ---
@@ -24,11 +24,11 @@ class PriceCalculator
   INFRA_KIT_PER_CAM = 400  
 
   # --- 3. LABOR PRICES ---
-  BASE_LABOR_FEE = 2800      
+  BASE_LABOR_FEE = 1500      
   LABOR_PER_CAMERA = 1700
   
   # Surcharges
-  COMMERCIAL_SURCHARGE = 2500
+  COMMERCIAL_SURCHARGE = 500
   INDUSTRIAL_SURCHARGE = 5000
   FLOOR_TAX = 500
 
@@ -68,17 +68,17 @@ class PriceCalculator
     # -----------------------------------------------------------
 
     # 2. Infrastructure Costs
-    cost_infra_per_cam = 900 
+    cost_infra_per_cam = 300 
     raw_cost_infra = @total * cost_infra_per_cam
     
     if @total > 8
-      raw_cost_infra += 2000 
+      raw_cost_infra += 500 
     end
 
     # 3. Labor Costs
     tech_rate_per_cam = 1000
     tech_floor_fee = (@floors > 1) ? (@floors * 500) : 0
-    tech_base_fee = 2000
+    tech_base_fee = 500
    
     raw_cost_labor = (@total * tech_rate_per_cam) + tech_floor_fee + tech_base_fee
 
