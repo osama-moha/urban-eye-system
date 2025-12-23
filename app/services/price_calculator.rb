@@ -103,7 +103,7 @@ class PriceCalculator
     # ------------------------------------------------
     
     # Dynamic Margin: Lower % for bulk jobs, Higher % for small jobs
-    margin_percent = @total > 8 ? 0.35 : 0.45 
+    margin_percent = @total > 8 ? 0.25 : 0.30 
 
     # Calculate Selling Prices
     sell_hardware = (raw_cameras + raw_central + raw_extras) * (1 + margin_percent)
