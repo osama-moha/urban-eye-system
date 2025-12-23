@@ -19,7 +19,7 @@ class PriceCalculator
 
     # Accessories
     monitor: 3500,       # Your cost for a decent screen
-    ups: 5500,           # Your cost for a 650VA UPS
+    ups: 0,           # Your cost for a 650VA UPS
     
     # Infrastructure
     cable_per_m: 15,     # Your buying price per meter (approx)
