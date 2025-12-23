@@ -126,7 +126,23 @@
       <div class="card-urban-wrapper">
           
           <%= form_with model: @quote, url: quotes_path, class: "needs-validation" do |form| %>
-
+            <div class="card mb-4 border-warning shadow-sm" style="background-color: #fffbf0;">
+  <div class="card-body p-4">
+    <div class="form-check d-flex align-items-center">
+      <%= form.check_box :subscription, class: "form-check-input me-3", style: "width: 25px; height: 25px; border-color: #ffc107;", id: "subscription_check" %>
+      
+      <label class="form-check-label" for="subscription_check" style="cursor: pointer;">
+        <strong class="text-dark d-block" style="font-size: 1.1rem; color: #856404;">
+          ✨ Special Offer: "Starter Shield" Package
+        </strong>
+        <span class="text-muted small" style="line-height: 1.4;">
+          Get a 3-Camera System installed for just <strong>KES 7,999</strong> (upfront) + KES 2,900/month.
+          <br>Includes <strong>Free Maintenance</strong> & "Protected by Urban Eye" Gate Signage.
+        </span>
+      </label>
+    </div>
+  </div>
+</div>
             <div class="section-card">
               <div class="section-card-header">
                 <h5 class="section-title-text">

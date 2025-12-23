@@ -1,5 +1,7 @@
 class PriceCalculator
-  # --- 1. HARDWARE PRICES (Nairobi Market Rates) ---
+  # ==========================================
+  # 1. HARDWARE PRICES (Your Nairobi Rates)
+  # ==========================================
   DVR_4_CH = 4500
   DVR_8_CH = 7500   
   DVR_16_CH = 10000 
@@ -13,26 +15,31 @@ class PriceCalculator
   PSU_MED   = 3500  
   PSU_LARGE = 6000  
 
-  # Monitor & UPS
   MONITOR_PRICE = 3500 
   UPS_PRICE = 6500
 
-  # --- 2. INFRASTRUCTURE PRICES ---
-  CABLE_BOX_PRICE = 4500    
-  CABLE_PER_METER = 40      
-  VIDEO_BALUN_PAIR = 350    
+  # ==========================================
+  # 2. INFRASTRUCTURE & LABOR
+  # ==========================================
+  CABLE_BOX_PRICE = 4500     
+  CABLE_PER_METER = 40       
+  VIDEO_BALUN_PAIR = 350     
   INFRA_KIT_PER_CAM = 400  
 
-  # --- 3. LABOR PRICES ---
-  BASE_LABOR_FEE = 1500      
+  BASE_LABOR_FEE = 1500       
   LABOR_PER_CAMERA = 1700
   
-  # Surcharges
   COMMERCIAL_SURCHARGE = 500
   INDUSTRIAL_SURCHARGE = 5000
   FLOOR_TAX = 500
 
-  def initialize(total, outdoor, building_type, floors, days, monitor, ups)
+  # ==========================================
+  # 3. NEW: SUBSCRIPTION CONSTANTS
+  # ==========================================
+  SUB_STARTER_INSTALL_FEE = 7999  # Upfront
+  SUB_STARTER_MONTHLY_FEE = 2900  # Monthly
+
+  def initialize(total, outdoor, building_type, floors, days, monitor, ups, subscription_mode = false)
     @total = total.to_i
     @outdoor = outdoor.to_i
     @indoor = @total - @outdoor
@@ -40,15 +47,25 @@ class PriceCalculator
     @floors = floors.to_i
     @days = days.to_i
     
-    # SAFE CHECK: Ensure these are true/false
+    # Safe Boolean Check
     @monitor = [true, "true", "1", 1].include?(monitor)
     @ups = [true, "true", "1", 1].include?(ups)
+    
+    # Check for Subscription Mode
+    @subscription_mode = [true, "true", "1", 1].include?(subscription_mode)
   end
 
   def calculate
-    # ==========================================
-    # STEP 1: CALCULATE BUYING PRICE (COSTS)
-    # ==========================================
+    # ------------------------------------------------
+    # PATH A: SUBSCRIPTION MODE (Starter Shield)
+    # ------------------------------------------------
+    if @subscription_mode
+      return calculate_subscription_package
+    end
+
+    # ------------------------------------------------
+    # PATH B: STANDARD QUOTE (Your Code)
+    # ------------------------------------------------
     
     # 1. Hardware Costs
     cost_camera_indoor  = 1500
@@ -57,7 +74,7 @@ class PriceCalculator
     raw_cost_cameras = (@indoor * cost_camera_indoor) + (@outdoor * cost_camera_outdoor)
     raw_cost_central = get_dvr_cost(@total) + get_hdd_cost(@total) + get_psu_cost(@total)
 
-    # --- RESTORED MISSING LOGIC: Add Monitor/UPS if selected ---
+    # Add Monitor/UPS if selected
     if @monitor
       raw_cost_central += MONITOR_PRICE
     end
@@ -65,7 +82,6 @@ class PriceCalculator
     if @ups
       raw_cost_central += UPS_PRICE
     end
-    # -----------------------------------------------------------
 
     # 2. Infrastructure Costs
     cost_infra_per_cam = 300 
@@ -77,6 +93,8 @@ class PriceCalculator
 
     # 3. Labor Costs
     tech_rate_per_cam = 1000
+    
+    # FIX: Calculate floor fee ONCE to avoid double charging
     tech_floor_fee = (@floors > 1) ? (@floors * 500) : 0
     tech_base_fee = 500
    
@@ -89,16 +107,12 @@ class PriceCalculator
       raw_cost_labor += INDUSTRIAL_SURCHARGE
     end
 
-    if @floors > 1
-      raw_cost_labor += (@floors * FLOOR_TAX)
-    end
-  
+    # REMOVED: The second "if @floors > 1" block was here. 
+    # It is already included in `tech_floor_fee` above.
 
     # ==========================================
     # STEP 2: APPLY YOUR PROFIT MARGIN
     # ==========================================
-    # 15% for small jobs (Keep price competitive)
-    # 30% for big jobs (Standard margin)
     markup_percent = if @total <= 8
                         0.15
                       else
@@ -124,7 +138,8 @@ class PriceCalculator
         dvr_type: get_dvr_name(@total),
         hdd_size: get_hdd_name(@total),
         monitor_included: @monitor ? "Yes" : "No",
-        ups_included: @ups ? "Yes" : "No"
+        ups_included: @ups ? "Yes" : "No",
+        is_subscription: false
       },
       total: grand_total
     }
@@ -151,6 +166,26 @@ class PriceCalculator
   end
   
   private
+
+  # --- SUBSCRIPTION HELPER ---
+  def calculate_subscription_package
+    {
+      details: {
+        package_name: "Urban Eye Starter Shield",
+        hardware_kit: "Included (Rental)",
+        infrastructure: "Included",
+        labor: SUB_STARTER_INSTALL_FEE, 
+        dvr_type: "4-Channel DVR (Internet Ready)",
+        hdd_size: "500GB (Loop Recording)",
+        monitor_included: "No (Mobile App Only)",
+        ups_included: "No",
+        is_subscription: true,
+        monthly_fee: SUB_STARTER_MONTHLY_FEE,
+        upfront_fee: SUB_STARTER_INSTALL_FEE
+      },
+      total: SUB_STARTER_INSTALL_FEE
+    }
+  end
 
   def get_hdd_name(count)
     if count <= 4 then "500GB HDD"

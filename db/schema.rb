@@ -10,10 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_12_21_111233) do
-  # These are extensions that must be enabled in order to support this database
-  enable_extension "pg_catalog.plpgsql"
-
+ActiveRecord::Schema[8.0].define(version: 2025_12_23_141742) do
   create_table "leads", force: :cascade do |t|
     t.string "name"
     t.string "phone"
@@ -25,7 +22,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_12_21_111233) do
   end
 
   create_table "quotes", force: :cascade do |t|
-    t.bigint "lead_id", null: false
+    t.integer "lead_id", null: false
     t.integer "camera_count"
     t.integer "floors"
     t.decimal "estimated_price"
@@ -38,12 +35,13 @@ ActiveRecord::Schema[8.0].define(version: 2025_12_21_111233) do
     t.boolean "ups"
     t.string "email"
     t.string "building_type"
-    t.decimal "total_amount"
+    t.decimal "total_amount", precision: 10, scale: 2
     t.string "timeline"
     t.string "status"
     t.string "default"
     t.string "Pending"
     t.string "location"
+    t.boolean "subscription"
     t.index ["lead_id"], name: "index_quotes_on_lead_id"
   end
 
