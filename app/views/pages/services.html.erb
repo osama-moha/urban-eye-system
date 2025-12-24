@@ -16,7 +16,12 @@
           <p class="text-muted small">Vetted, uniformed, and highly trained security officers for commercial and residential properties. 24/7 supervision and rapid response backup.</p>
         </div>
         <div class="card-footer bg-white border-0 pb-4 text-center">
-          <a href="https://wa.me/254111770786?text=Hi, I am interested in Manned Guarding Services." class="btn btn-outline-dark fw-bold w-75">Get Guard Quote</a>
+          <button type="button" class="btn btn-dark w-100" 
+        data-bs-toggle="modal" 
+        data-bs-target="#inquiryModal" 
+        data-service="Manned Guarding">
+  Request Guard Services
+</button>
         </div>
       </div>
     </div>
@@ -44,7 +49,12 @@
           <p class="text-muted small">Fingerprint, RFID card, and Face ID systems. Track employee attendance and restrict access to sensitive server rooms.</p>
         </div>
         <div class="card-footer bg-white border-0 pb-4 text-center">
-          <a href="https://wa.me/254111770786?text=Hi, I am interested in Access Control." class="btn btn-outline-dark fw-bold w-75">Inquire</a>
+          <button type="button" class="btn btn-outline-dark w-100" 
+        data-bs-toggle="modal" 
+        data-bs-target="#inquiryModal" 
+        data-service="Biometric Access Systems">
+  Inquire Now
+</button>
         </div>
       </div>
     </div>
@@ -59,7 +69,12 @@
           <p class="text-muted small">Top-wall razor wire with intelligent energizers. Triggers instant alarms upon cutting or tampering. Essential for perimeter defense.</p>
         </div>
         <div class="card-footer bg-white border-0 pb-4 text-center">
-          <a href="https://wa.me/254111770786?text=Hi, I am interested in Electric Fencing." class="btn btn-outline-dark fw-bold w-75">Inquire</a>
+          <button type="button" class="btn btn-outline-dark w-100" 
+        data-bs-toggle="modal" 
+        data-bs-target="#inquiryModal" 
+        data-service="Electric Fencing">
+  Get Fencing Quote
+</button>
         </div>
       </div>
     </div>
@@ -102,3 +117,72 @@
   .hover-lift { transition: transform 0.3s ease, box-shadow 0.3s ease; }
   .hover-lift:hover { transform: translateY(-10px); box-shadow: 0 1rem 3rem rgba(0,0,0,.175)!important; }
 </style>
+
+<div class="modal fade" id="inquiryModal" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header bg-dark text-white">
+        <h5 class="modal-title">Get a Quote for <span id="service-name-span" class="text-warning">Services</span></h5>
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      
+      <div class="modal-body">
+        <%= form_with model: Quote.new, url: quotes_path, local: true do |f| %>
+          
+          <%= f.hidden_field :building_type, id: "hidden-interest-field" %>
+          <%= f.hidden_field :camera_count, value: 0 %>
+          
+          <div class="mb-3">
+            <label class="form-label">Your Name</label>
+            <%= f.text_field :name, class: "form-control", required: true, placeholder: "John Doe" %>
+          </div>
+
+          <div class="mb-3">
+            <label class="form-label">Phone Number (WhatsApp)</label>
+            <%= f.text_field :whatsapp_number, class: "form-control", required: true, placeholder: "0712 345 678" %>
+          </div>
+
+          <div class="mb-3">
+            <label class="form-label">Location</label>
+            <%= f.text_field :location, class: "form-control", required: true, placeholder: "e.g. Westlands, Nairobi" %>
+          </div>
+          
+          <div class="mb-3">
+            <label class="form-label">Specific Requirements (Optional)</label>
+            <%= f.text_area :purpose, class: "form-control", rows: 3, placeholder: "Describe what you need..." %>
+          </div>
+
+          <div class="d-grid">
+            <%= f.submit "Request Quote", class: "btn btn-danger btn-lg" %>
+          </div>
+          
+          <p class="text-center small text-muted mt-2">
+            <i class="fas fa-lock"></i> Your details are sent securely to our team.
+          </p>
+        <% end %>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  document.addEventListener("DOMContentLoaded", function() {
+    var inquiryModal = document.getElementById('inquiryModal');
+    
+    inquiryModal.addEventListener('show.bs.modal', function (event) {
+      // Button that triggered the modal
+      var button = event.relatedTarget;
+      
+      // Extract info from data-service attribute
+      var serviceName = button.getAttribute('data-service');
+      
+      // Update the Modal Title
+      var modalTitle = inquiryModal.querySelector('#service-name-span');
+      modalTitle.textContent = serviceName;
+      
+      // Update the Hidden Field (so it saves to database as "Interest")
+      var hiddenInput = inquiryModal.querySelector('#hidden-interest-field');
+      hiddenInput.value = serviceName;
+    });
+  });
+</script>
