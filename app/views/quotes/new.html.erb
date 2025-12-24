@@ -1,7 +1,7 @@
 <style>
   :root {
-    --brand-blue: #0e2a5c; /* Deep Navy */
-    --brand-red: #c62828;  /* Red Accent */
+    --brand-blue: #0e2a5c; 
+    --brand-red: #c62828; 
     --brand-light: #f4f6f9;
   }
 
@@ -11,20 +11,20 @@
     min-height: 100vh;
   }
 
-  /* Premium Header Block */
+  /* Header Background */
   body::before {
     content: "";
     position: absolute;
     top: 0;
     left: 0;
     width: 100%;
-    height: 450px;
+    height: 400px;
     background: linear-gradient(170deg, var(--brand-blue) 0%, #001a33 100%);
     z-index: -1;
     clip-path: polygon(0 0, 100% 0, 100% 85%, 0% 100%);
   }
 
-  /* Card Styles */
+  /* Wrappers & Cards */
   .card-urban-wrapper { background: transparent; border: none; }
   
   .section-card {
@@ -53,27 +53,32 @@
 
   .section-title-icon { color: var(--brand-red); margin-right: 10px; font-size: 1.2rem; }
 
-  /* Tab Styles */
+  /* Tabs */
   .service-tab {
     cursor: pointer;
     padding: 15px;
     font-weight: bold;
     text-align: center;
     border-radius: 12px 12px 0 0;
-    background: rgba(255,255,255,0.1);
-    color: rgba(255,255,255,0.7);
+    background: rgba(255,255,255,0.15);
+    color: rgba(255,255,255,0.8);
     transition: all 0.2s;
+    border: 1px solid transparent;
   }
   
   .service-tab.active {
     background: white;
     color: var(--brand-blue);
-    box-shadow: 0 -4px 10px rgba(0,0,0,0.1);
+    box-shadow: 0 -4px 10px rgba(0,0,0,0.05);
+    border-top: 4px solid var(--brand-red);
   }
 
-  .form-control, .form-select { border-radius: 8px; padding: 12px; border: 1px solid #dee2e6; }
-  .form-control:focus { border-color: var(--brand-blue); box-shadow: 0 0 0 3px rgba(14, 42, 92, 0.1); }
+  /* Form Elements */
+  .form-label { font-weight: 600; color: #343a40; font-size: 0.9rem; margin-bottom: 0.4rem; }
+  .form-control, .form-select { border-radius: 8px; padding: 12px; border: 1px solid #dee2e6; font-size: 0.95rem; }
+  .form-control:focus, .form-select:focus { border-color: var(--brand-blue); box-shadow: 0 0 0 3px rgba(14, 42, 92, 0.1); }
   
+  /* Buttons */
   .btn-calculate {
     background-color: var(--brand-red);
     color: white;
@@ -84,7 +89,16 @@
     border-radius: 8px;
     transition: all 0.3s;
   }
-  .btn-calculate:hover { background-color: #b71c1c; transform: translateY(-2px); }
+  .btn-calculate:hover { background-color: #b71c1c; transform: translateY(-2px); box-shadow: 0 8px 20px rgba(198, 40, 40, 0.25); }
+
+  /* Hardware Option Cards */
+  .option-card {
+    border: 1px solid #e9ecef;
+    border-radius: 10px;
+    transition: all 0.2s;
+    background-color: #f8f9fa;
+  }
+  .option-card:hover { border-color: var(--brand-blue); background-color: #fff; }
 </style>
 
 <div class="container mt-5 mb-5">
@@ -113,7 +127,7 @@
           <%= form.hidden_field :building_type, id: "interest_field", value: "CCTV System" %>
           <%= form.hidden_field :purpose, id: "guard_details_storage", value: "CCTV Installation" %>
 
-          <div id="cctv-wrapper">
+          <div id="cctv-specifics">
             
             <div class="card mb-4 border-warning shadow-sm" style="background-color: #fffbf0; border-radius: 0 0 12px 12px;">
               <div class="card-body p-4">
@@ -124,7 +138,7 @@
                       ✨ Special Offer: "Starter Shield" Package
                     </strong>
                     <span class="text-muted small" style="line-height: 1.4;">
-                      Get a 3-Camera System for just <strong>KES 7,999</strong> + KES 2,900/mo.
+                      3-Camera System for <strong>KES 7,999</strong> + KES 2,900/mo.
                     </span>
                   </label>
                 </div>
@@ -133,7 +147,7 @@
 
             <div class="section-card" id="camera-config-card">
               <div class="section-card-header">
-                <h5 class="section-title-text"><i class="bi bi-camera-video section-title-icon"></i> 1. Camera Configuration</h5>
+                <h5 class="section-title-text"><i class="bi bi-camera-video section-title-icon"></i> Camera Configuration</h5>
               </div>
               <div class="card-body p-4">
                 <div class="row g-4">
@@ -144,42 +158,22 @@
                   <div class="col-md-6">
                     <%= form.label :outdoor_count, "Outdoor Cameras", class: "form-label" %>
                     <%= form.number_field :outdoor_count, class: "form-control", value: 0, min: 0 %>
+                    <div class="form-text text-muted small mt-1">Includes weatherproof IP67 housing.</div>
                   </div>
                 </div>
               </div>
             </div>
+          </div>
 
-            <div class="section-card">
+          <div id="guard-specifics" style="display: none;">
+             <div class="section-card" style="border-radius: 0 0 12px 12px;">
               <div class="section-card-header">
-                <h5 class="section-title-text"><i class="bi bi-hdd-network section-title-icon"></i> 2. Hardware Extras</h5>
-              </div>
-              <div class="card-body p-4">
-                <div class="row g-3">
-                  <div class="col-sm-6">
-                     <div class="p-3 border rounded bg-light">
-                       <%= form.check_box :monitor, class: "form-check-input me-2" %>
-                       <label class="fw-bold">Include Monitor</label>
-                     </div>
-                  </div>
-                  <div class="col-sm-6">
-                     <div class="p-3 border rounded bg-light">
-                       <%= form.check_box :ups, class: "form-check-input me-2" %>
-                       <label class="fw-bold">Include UPS Backup</label>
-                     </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div> 
-          <div id="guard-wrapper" style="display: none;">
-            <div class="section-card" style="border-radius: 0 0 12px 12px;">
-              <div class="section-card-header">
-                <h5 class="section-title-text"><i class="bi bi-shield-user section-title-icon"></i> 1. Guarding Requirements</h5>
+                <h5 class="section-title-text"><i class="bi bi-shield-user section-title-icon"></i> Guarding Shifts</h5>
               </div>
               <div class="card-body p-4">
                 <div class="alert alert-info border-0 shadow-sm mb-4">
                   <i class="bi bi-info-circle-fill me-2"></i>
-                  Prices are subject to site survey. Includes uniforms, radio, and backup response.
+                  Includes uniforms, radio equipment, and 24/7 backup response.
                 </div>
                 <div class="row g-4">
                   <div class="col-md-6">
@@ -194,10 +188,90 @@
               </div>
             </div>
           </div>
+
+          <div class="section-card">
+            <div class="section-card-header">
+              <h5 class="section-title-text"><i class="bi bi-building section-title-icon"></i> Property Profile</h5>
+            </div>
+            <div class="card-body p-4">
+              <div class="row g-4">
+                <div class="col-md-6">
+                  <%= form.label :building_type, "Property Type", class: "form-label" %>
+                  <%= form.select :building_type, 
+                      ["Home / Residential", "Commercial / Office", "Industrial / Warehouse"], 
+                      {}, class: "form-select" %>
+                </div>
+                <div class="col-md-6">
+                   <%= form.label :location, "Location / Estate", class: "form-label" %>
+                   <%= form.text_field :location, class: "form-control", placeholder: "e.g. Westlands", required: true %>
+                </div>
+                
+                <div class="col-md-6">
+                  <%= form.label :timeline, "Installation Urgency", class: "form-label" %>
+                  <%= form.select :timeline, 
+                      [["Within 48 Hours (Urgent)", "immediate"], 
+                       ["Within 1-2 Weeks", "2_weeks"], 
+                       ["Just Planning", "planning"]], 
+                      { prompt: "When do you need this?" }, class: "form-select" %>
+                </div>
+
+                <div class="col-md-6" id="floors-container">
+                   <%= form.label :floors, "Building Floors", class: "form-label" %>
+                   <%= form.number_field :floors, class: "form-control", value: 1, min: 1 %>
+                   <div class="form-text text-muted small mt-1">Affects cabling costs.</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="section-card" id="tech-specs-card">
+            <div class="section-card-header">
+              <h5 class="section-title-text">
+                <i class="bi bi-hdd-network section-title-icon"></i> Storage & Extras
+              </h5>
+            </div>
+            <div class="card-body p-4">
+              <div class="row g-4 mb-4">
+                 <div class="col-md-6">
+                   <%= form.label :purpose, "Primary Goal", class: "form-label" %>
+                   <%= form.select :purpose, 
+                       ["Theft Prevention", "Staff Monitoring", "Perimeter Defense", "Remote Viewing"], 
+                       { prompt: "Select goal..." }, class: "form-select" %>
+                 </div>
+                 <div class="col-md-6">
+                   <%= form.label :recording_days, "Recording Retention", class: "form-label" %>
+                   <%= form.select :recording_days, 
+                       [["Standard (7 Days)", 7], ["Business (14 Days)", 14], ["Extended (30 Days)", 30]], 
+                       {}, class: "form-select" %>
+                 </div>
+              </div>
+
+              <label class="form-label mb-2 d-block">Hardware Add-ons</label>
+              <div class="row g-3">
+                <div class="col-sm-6">
+                  <div class="option-card p-3 h-100 d-flex align-items-center cursor-pointer">
+                    <div class="form-check w-100">
+                      <%= form.check_box :monitor, class: "form-check-input mt-2", style: "transform: scale(1.3); margin-right: 12px;" %>
+                      <label class="form-check-label fw-bold">Include Monitor</label>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-sm-6">
+                  <div class="option-card p-3 h-100 d-flex align-items-center cursor-pointer">
+                    <div class="form-check w-100">
+                      <%= form.check_box :ups, class: "form-check-input mt-2", style: "transform: scale(1.3); margin-right: 12px;" %>
+                      <label class="form-check-label fw-bold">Include UPS Backup</label>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
           <div class="section-card border-top-0" style="box-shadow: 0 10px 30px rgba(0,0,0,0.08);">
             <div class="section-card-header bg-light">
               <h5 class="section-title-text text-dark">
-                <i class="bi bi-person-check-fill section-title-icon"></i> Contact Details
+                <i class="bi bi-person-check-fill section-title-icon"></i> Final Details
               </h5>
             </div>
             <div class="card-body p-4">
@@ -211,60 +285,71 @@
               <div class="row g-3">
                 <div class="col-md-12">
                   <%= form.label :name, "Your Full Name", class: "form-label" %>
-                  <%= form.text_field :name, class: "form-control", required: true %>
+                  <%= form.text_field :name, class: "form-control", required: true, placeholder: "e.g. John Doe" %>
                 </div>
                 <div class="col-md-6">
-                  <%= form.label :location, "Location / Estate", class: "form-label" %>
-                  <%= form.text_field :location, class: "form-control", required: true %>
+                  <%= form.label :email, "Email Address", class: "form-label" %>
+                  <%= form.email_field :email, class: "form-control", placeholder: "john@example.com" %>
                 </div>
                 <div class="col-md-6">
                   <%= form.label :whatsapp_number, "WhatsApp Number", class: "form-label" %>
-                  <%= form.text_field :whatsapp_number, class: "form-control", required: true %>
+                  <%= form.text_field :whatsapp_number, class: "form-control", required: true, placeholder: "07..." %>
                 </div>
               </div>
 
               <div class="mt-4 pt-2">
                 <%= form.submit "Get Official Quote", class: "btn btn-calculate w-100 btn-lg py-3 shadow", id: "submit-btn" %>
+                <div class="text-center mt-3 text-muted small">
+                  <i class="bi bi-lock-fill"></i> Your data is 100% secure.
+                </div>
               </div>
             </div>
           </div>
 
         <% end %>
       </div>
-      
     </div>
   </div>
 </div>
 
 <script>
-  // --- JAVASCRIPT LOGIC ---
+  // RATES
   const RATE_CAM = 6500;
   const STARTUP_BASE = 5000;
 
   function switchTab(mode) {
     const cctvTab = document.getElementById('tab-cctv');
     const guardTab = document.getElementById('tab-guarding');
-    const cctvWrapper = document.getElementById('cctv-wrapper');
-    const guardWrapper = document.getElementById('guard-wrapper');
+    
+    // Areas to Toggle
+    const cctvSpecifics = document.getElementById('cctv-specifics');
+    const guardSpecifics = document.getElementById('guard-specifics');
+    const techSpecsCard = document.getElementById('tech-specs-card');
+    const floorsContainer = document.getElementById('floors-container');
+    
+    // Data Fields
     const interestField = document.getElementById('interest_field');
+    const submitBtn = document.getElementById('submit-btn');
     const priceLabel = document.getElementById('price-label');
     const livePrice = document.getElementById('live-price');
     const priceNote = document.getElementById('price-note');
-    const submitBtn = document.getElementById('submit-btn');
 
     if (mode === 'guarding') {
-      // 1. UI Changes
+      // 1. UI: Guard Mode
       guardTab.classList.add('active');
       cctvTab.classList.remove('active');
-      cctvWrapper.style.display = 'none';
-      guardWrapper.style.display = 'block';
+      
+      cctvSpecifics.style.display = 'none';
+      guardSpecifics.style.display = 'block';
+      techSpecsCard.style.display = 'none';   // Hide UPS/Recording for guards
+      floorsContainer.style.display = 'none'; // Hide Floors for guards
 
-      // 2. Data Changes
+      // 2. Data
       interestField.value = "Manned Guarding";
       submitBtn.value = "Request Risk Assessment";
-      updateGuardDetails(); // Ensure details are saved
+      updateGuardDetails(); // Save guard count
 
-      // 3. Price Hiding (Safe Mode)
+      // 3. Price: SAFE MODE
       priceLabel.innerText = "Monthly Estimate";
       livePrice.innerText = "Pending Survey";
       livePrice.classList.remove('text-danger');
@@ -272,28 +357,33 @@
       priceNote.innerText = "We will contact you for a site visit.";
 
     } else {
-      // 1. UI Changes
+      // 1. UI: CCTV Mode
       cctvTab.classList.add('active');
       guardTab.classList.remove('active');
-      guardWrapper.style.display = 'none';
-      cctvWrapper.style.display = 'block';
+      
+      cctvSpecifics.style.display = 'block';
+      guardSpecifics.style.display = 'none';
+      techSpecsCard.style.display = 'block';   // Show UPS/Recording
+      floorsContainer.style.display = 'block'; // Show Floors
 
-      // 2. Data Changes
+      // 2. Data
       interestField.value = "CCTV System";
       submitBtn.value = "Get Official Quote";
-      document.getElementById('guard_details_storage').value = "CCTV Installation";
+      document.getElementById('guard_details_storage').value = "CCTV Installation"; // Reset logic
 
-      // 3. Price Showing (Hook Mode)
+      // 3. Price: HOOK MODE
       priceLabel.innerText = "Est. Hardware Cost";
       livePrice.classList.add('text-danger');
       livePrice.classList.remove('text-muted');
-      calculateCCTV(); // Run math
+      priceNote.innerText = "*Installation cabling TBD.";
+      calculateCCTV();
     }
   }
 
   function updateGuardDetails() {
     let d = document.getElementById('day_guards').value || 0;
     let n = document.getElementById('night_guards').value || 0;
+    // We overwrite 'purpose' field so you see guard count in admin
     document.getElementById('guard_details_storage').value = `Request: ${d} Day Guard(s), ${n} Night Guard(s)`;
   }
 
@@ -305,7 +395,7 @@
     const configCard = document.getElementById('camera-config-card');
 
     if (isSub) {
-      if(configCard) configCard.style.display = 'none'; // Hide config for package deal
+      if(configCard) configCard.style.display = 'none'; 
       livePrice.innerText = "KES 7,999";
       priceNote.innerText = "+ KES 2,900/mo (Subject to cable length)";
       priceNote.classList.add('text-success', 'fw-bold');
@@ -319,7 +409,7 @@
     }
   }
 
-  // Listeners
+  // Event Listeners
   document.addEventListener("DOMContentLoaded", function() {
     document.getElementById("subscription_check").addEventListener("change", calculateCCTV);
   });
