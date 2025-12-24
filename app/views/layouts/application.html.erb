@@ -68,10 +68,15 @@ body {
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark py-2">
   <div class="container-fluid">
     
-    <%= link_to root_path, class: "navbar-brand d-flex align-items-center" do %>
-      <i class="bi bi-shield-lock-fill me-2"></i>
-      <span class="fw-bold">Urban Eye</span>
-    <% end %>
+    <%= link_to root_path, class: "navbar-brand d-flex align-items-center", style: "text-decoration: none;" do %>
+  <span class="fw-bolder text-uppercase" style="color: #000000; font-size: 1.5rem; letter-spacing: -1px;">
+    URBAN
+  </span>
+  
+  <span class="fw-bolder text-uppercase" style="color: #d92e2e; font-size: 1.5rem; letter-spacing: -1px;">
+    EYE
+  </span>
+<% end %>
 
     <div class="d-flex align-items-center order-lg-last">
       
