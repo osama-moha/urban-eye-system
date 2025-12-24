@@ -86,14 +86,16 @@
               
               <td>
                 <% if last_quote %>
-                  <% if last_quote.building_type == "Manned Guarding" %>
+                  <% if last_quote.purpose.to_s.include?("Guard") %>
                     <span class="badge bg-primary border border-primary">
                       <i class="bi bi-shield-user me-1"></i> GUARDS
                     </span>
-                  <% elsif last_quote.building_type == "CCTV System" %>
+                  
+                  <% elsif last_quote.camera_count.to_i > 0 %>
                     <span class="badge bg-dark border border-dark">
                       <i class="bi bi-camera-video me-1"></i> CCTV
                     </span>
+
                   <% else %>
                     <span class="badge bg-info text-dark border border-info">
                       <%= last_quote.building_type %>
