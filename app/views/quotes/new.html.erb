@@ -54,24 +54,37 @@
   .section-title-icon { color: var(--brand-red); margin-right: 10px; font-size: 1.2rem; }
 
   /* Tabs */
-  .service-tab {
-    cursor: pointer;
-    padding: 15px;
-    font-weight: bold;
-    text-align: center;
-    border-radius: 12px 12px 0 0;
-    background: rgba(255,255,255,0.15);
-    color: rgba(255,255,255,0.8);
-    transition: all 0.2s;
-    border: 1px solid transparent;
-  }
+  /* Tabs */
+.service-tab {
+  cursor: pointer;
+  padding: 15px;
+  font-weight: 800; /* Extra Bold */
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  text-align: center;
+  border-radius: 12px 12px 0 0;
   
-  .service-tab.active {
-    background: white;
-    color: var(--brand-blue);
-    box-shadow: 0 -4px 10px rgba(0,0,0,0.05);
-    border-top: 4px solid var(--brand-red);
-  }
+  /* NEW STYLE: Brighter and outlined */
+  background: rgba(0, 0, 0, 0.3); /* Darker background to make text pop */
+  color: #ffffff; /* Pure White Text */
+  border: 1px solid rgba(255, 255, 255, 0.3); /* White Border */
+  
+  transition: all 0.2s;
+  margin-right: 4px; /* Tiny gap between tabs */
+}
+
+.service-tab:hover {
+  background: rgba(255, 255, 255, 0.2);
+}
+
+.service-tab.active {
+  background: white;
+  color: var(--brand-blue);
+  box-shadow: 0 -4px 10px rgba(0,0,0,0.1);
+  border-top: 5px solid var(--brand-red); /* Thicker Red Line */
+  border-bottom: none;
+  opacity: 1;
+}
 
   /* Form Elements */
   .form-label { font-weight: 600; color: #343a40; font-size: 0.9rem; margin-bottom: 0.4rem; }
