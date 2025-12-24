@@ -152,6 +152,9 @@
                     </strong>
                     <span class="text-muted small" style="line-height: 1.4;">
                       3-Camera System for <strong>KES 7,999</strong> + KES 2,900/mo.
+                      <br>
+                      <span class="badge bg-warning text-dark border border-warning mt-1">12-Month Contract</span>
+                      <span class="ms-1 fst-italic text-muted">Includes Free Maintenance.</span>
                     </span>
                   </label>
                 </div>
@@ -284,15 +287,21 @@
           <div class="section-card border-top-0" style="box-shadow: 0 10px 30px rgba(0,0,0,0.08);">
             <div class="section-card-header bg-light">
               <h5 class="section-title-text text-dark">
-                <i class="bi bi-person-check-fill section-title-icon"></i> Final Details
+                <i class="bi bi-person-check-fill section-title-icon"></i> Final Step
               </h5>
             </div>
             <div class="card-body p-4">
               
-              <div class="text-center mb-4 p-3 rounded border" style="background-color: #fafafa;">
-                <small class="text-muted text-uppercase fw-bold" id="price-label">Est. Hardware Cost</small>
-                <h1 class="fw-bold text-danger mb-0" id="live-price">KES 0</h1>
-                <p class="text-muted small mb-0 fst-italic" id="price-note">*Installation cabling TBD.</p>
+              <div class="alert alert-info border-0 shadow-sm mb-4">
+                <div class="d-flex">
+                  <div class="me-3">
+                    <i class="bi bi-lock-fill fs-1"></i>
+                  </div>
+                  <div>
+                    <h5 class="fw-bold mb-1">Almost Done!</h5>
+                    <p class="mb-0 small">Enter your details below to unlock your <strong>Instant Estimate</strong> and receive the official breakdown via WhatsApp.</p>
+                  </div>
+                </div>
               </div>
 
               <div class="row g-3">
@@ -311,9 +320,10 @@
               </div>
 
               <div class="mt-4 pt-2">
-                <%= form.submit "Get Official Quote", class: "btn btn-calculate w-100 btn-lg py-3 shadow", id: "submit-btn" %>
+                <%= form.submit "Calculate My Quote", class: "btn btn-calculate w-100 btn-lg py-3 shadow", id: "submit-btn" %>
                 <div class="text-center mt-3 text-muted small">
-                  <i class="bi bi-lock-fill"></i> Your data is 100% secure.
+                  <i class="bi bi-shield-check"></i> 
+                  Your data is secure. We do not spam.
                 </div>
               </div>
             </div>
@@ -343,12 +353,13 @@
     // Data Fields
     const interestField = document.getElementById('interest_field');
     const submitBtn = document.getElementById('submit-btn');
+    
+    // Price Elements (These might be missing now, which is expected)
     const priceLabel = document.getElementById('price-label');
     const livePrice = document.getElementById('live-price');
     const priceNote = document.getElementById('price-note');
 
     // --- THE FIX: FIND THE CCTV DROPDOWN ---
-    // We select it specifically so we can disable it when in Guard mode
     const cctvDropdown = document.querySelector("select[name='quote[purpose]']");
 
     if (mode === 'guarding') {
@@ -358,24 +369,25 @@
       
       cctvSpecifics.style.display = 'none';
       guardSpecifics.style.display = 'block';
-      techSpecsCard.style.display = 'none';   // Hide UPS/Recording for guards
-      floorsContainer.style.display = 'none'; // Hide Floors for guards
+      techSpecsCard.style.display = 'none';   
+      floorsContainer.style.display = 'none'; 
 
       // 2. Data & Conflict Fix
       interestField.value = "Manned Guarding";
       submitBtn.value = "Request Risk Assessment";
-      updateGuardDetails(); // Save guard count
+      updateGuardDetails(); 
       
       // CRITICAL: DISABLE CCTV DROPDOWN
-      // This stops it from overwriting your Guard details with "Theft Prevention"
       if(cctvDropdown) cctvDropdown.disabled = true;
 
-      // 3. Price: SAFE MODE
-      priceLabel.innerText = "Monthly Estimate";
-      livePrice.innerText = "Pending Survey";
-      livePrice.classList.remove('text-danger');
-      livePrice.classList.add('text-muted');
-      priceNote.innerText = "We will contact you for a site visit.";
+      // 3. Price: SAFE MODE (Only update if element exists)
+      if (livePrice && priceLabel) {
+        priceLabel.innerText = "Monthly Estimate";
+        livePrice.innerText = "Pending Survey";
+        livePrice.classList.remove('text-danger');
+        livePrice.classList.add('text-muted');
+        priceNote.innerText = "We will contact you for a site visit.";
+      }
 
     } else {
       // 1. UI: CCTV Mode
@@ -384,22 +396,24 @@
       
       cctvSpecifics.style.display = 'block';
       guardSpecifics.style.display = 'none';
-      techSpecsCard.style.display = 'block';   // Show UPS/Recording
-      floorsContainer.style.display = 'block'; // Show Floors
+      techSpecsCard.style.display = 'block';   
+      floorsContainer.style.display = 'block'; 
 
       // 2. Data
       interestField.value = "CCTV System";
-      submitBtn.value = "Get Official Quote";
-      document.getElementById('guard_details_storage').value = "CCTV Installation"; // Reset logic
+      submitBtn.value = "Calculate My Quote";
+      document.getElementById('guard_details_storage').value = "CCTV Installation"; 
       
       // RE-ENABLE CCTV DROPDOWN
       if(cctvDropdown) cctvDropdown.disabled = false;
 
-      // 3. Price: HOOK MODE
-      priceLabel.innerText = "Est. Hardware Cost";
-      livePrice.classList.add('text-danger');
-      livePrice.classList.remove('text-muted');
-      priceNote.innerText = "*Installation cabling TBD.";
+      // 3. Price: HOOK MODE (Only update if element exists)
+      if (livePrice && priceLabel) {
+        priceLabel.innerText = "Est. Hardware Cost";
+        livePrice.classList.add('text-danger');
+        livePrice.classList.remove('text-muted');
+      }
+      
       calculateCCTV();
     }
   }
@@ -407,29 +421,40 @@
   function updateGuardDetails() {
     let d = document.getElementById('day_guards').value || 0;
     let n = document.getElementById('night_guards').value || 0;
-    // We overwrite 'purpose' field so you see guard count in admin
     document.getElementById('guard_details_storage').value = `Request: ${d} Day Guard(s), ${n} Night Guard(s)`;
   }
 
   function calculateCCTV() {
     const camCount = parseInt(document.querySelector("input[name='quote[camera_count]']").value) || 0;
     const isSub = document.getElementById("subscription_check").checked;
+    
+    // Elements
     const livePrice = document.getElementById('live-price');
     const priceNote = document.getElementById('price-note');
     const configCard = document.getElementById('camera-config-card');
 
+    // --- PART 1: UI LOGIC (Always Run This) ---
+    // Hides camera inputs if subscription is checked
     if (isSub) {
       if(configCard) configCard.style.display = 'none'; 
-      livePrice.innerText = "KES 7,999";
-      priceNote.innerText = "+ KES 2,900/mo (Subject to cable length)";
-      priceNote.classList.add('text-success', 'fw-bold');
     } else {
       if(configCard) configCard.style.display = 'block';
-      let total = (camCount * RATE_CAM) + STARTUP_BASE;
-      if (camCount === 0) total = 0;
-      livePrice.innerText = "KES " + total.toLocaleString();
-      priceNote.innerText = "*Installation cabling TBD.";
-      priceNote.classList.remove('text-success', 'fw-bold');
+    }
+
+    // --- PART 2: PRICE LOGIC (Only Run If Box Exists) ---
+    if (livePrice && priceNote) {
+       if (isSub) {
+         livePrice.innerText = "KES 7,999";
+         // UPDATED TEXT HERE
+         priceNote.innerText = "+ KES 2,900/mo (12-Month Contract)"; 
+         priceNote.classList.add('text-success', 'fw-bold');
+       } else {
+         let total = (camCount * RATE_CAM) + STARTUP_BASE;
+         if (camCount === 0) total = 0;
+         livePrice.innerText = "KES " + total.toLocaleString();
+         priceNote.innerText = "*Installation cabling TBD.";
+         priceNote.classList.remove('text-success', 'fw-bold');
+       }
     }
   }
 
