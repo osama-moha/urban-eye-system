@@ -30,36 +30,43 @@ class QuotesController < ApplicationController
     # Create the Quote
     @quote = @lead.quotes.new(quote_params.except(:whatsapp_number, :email, :name, :location))
 
+    # --- SAFETY CHECK: Only Calculate if Cameras Exist ---
     if defined?(PriceCalculator)
-      # PASS PARAMS DIRECTLY + NEW SUBSCRIPTION FLAG
-      calculator = PriceCalculator.new(
-        quote_params[:camera_count],
-        quote_params[:outdoor_count],
-        quote_params[:building_type],
-        quote_params[:floors],
-        quote_params[:recording_days],
-        quote_params[:monitor],
-        quote_params[:ups],
-        quote_params[:subscription] # <--- NEW: Pass the checkbox value!
-      )
+      # Check if we actually have cameras (CCTV Mode)
+      if @quote.camera_count.to_i > 0
+        calculator = PriceCalculator.new(
+          quote_params[:camera_count],
+          quote_params[:outdoor_count],
+          quote_params[:building_type],
+          quote_params[:floors],
+          quote_params[:recording_days],
+          quote_params[:monitor],
+          quote_params[:ups],
+          quote_params[:subscription] 
+        )
+        
+        result = calculator.calculate
+        @quote.total_amount = result[:total]
+      else
+        # GUARD MODE: No hardware cost, price is 0 (Pending Survey)
+        @quote.total_amount = 0
+      end
       
-      result = calculator.calculate
-      @quote.total_amount = result[:total]
-      
-      # Save the subscription choice to the DB (requires Step 1 migration)
       @quote.subscription = quote_params[:subscription]
     else
       @quote.total_amount = 0
     end
+    # -----------------------------------------------------
 
     if @quote.save
       redirect_to @quote, notice: 'Quote created successfully.'
     else
+      # If you see "Unprocessable Entity", the issue is in app/models/quote.rb
       render :new, status: :unprocessable_entity
     end
   end
 
-  # 3. The Result Page
+  # 3. The Result Page (Kept the same)
   def show
     @quote = Quote.find(params[:id])
     
@@ -67,27 +74,32 @@ class QuotesController < ApplicationController
     @indoor_count = @quote.camera_count.to_i - @outdoor_count
 
     if defined?(PriceCalculator)
-      # We check if the saved quote has 'subscription' set to true
       is_sub = @quote.respond_to?(:subscription) ? @quote.subscription : false
 
-      calculator = PriceCalculator.new(
-        @quote.camera_count, @quote.outdoor_count, @quote.building_type,
-        @quote.floors, @quote.recording_days, 
-        @quote.monitor, 
-        @quote.ups,
-        is_sub # <--- NEW: Tell calculator this is a subscription quote
-      )
-      result = calculator.calculate
-      
-      @details = result[:details]
-      @min = result[:total]
-      
-      # Standard variables
-      @hardware = result[:details][:hardware_kit]
-      @labor = result[:details][:labor]
-      @infrastructure = result[:details][:infrastructure]
-      @hdd_name = result[:details][:hdd_size]
-      @dvr_name = result[:details][:dvr_type]
+      # Only run detailed breakdown if it's a CCTV quote
+      if @quote.camera_count.to_i > 0
+        calculator = PriceCalculator.new(
+          @quote.camera_count, @quote.outdoor_count, @quote.building_type,
+          @quote.floors, @quote.recording_days, 
+          @quote.monitor, 
+          @quote.ups,
+          is_sub 
+        )
+        result = calculator.calculate
+        
+        @details = result[:details]
+        @min = result[:total]
+        
+        @hardware = result[:details][:hardware_kit]
+        @labor = result[:details][:labor]
+        @infrastructure = result[:details][:infrastructure]
+        @hdd_name = result[:details][:hdd_size]
+        @dvr_name = result[:details][:dvr_type]
+      else
+        # Guard Mode Defaults
+        @min = 0
+        @details = {}
+      end
     end
   end
 
@@ -98,7 +110,7 @@ class QuotesController < ApplicationController
       :camera_count, :outdoor_count, :building_type, :floors, 
       :timeline, :purpose, :recording_days, 
       :monitor, :ups, 
-      :subscription, # <--- NEW: Allow this parameter!
+      :subscription,
       :name, :email, :whatsapp_number, :location
     )
   end
