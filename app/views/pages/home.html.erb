@@ -1,0 +1,173 @@
+<div class="position-relative bg-dark text-white text-center d-flex align-items-center justify-content-center" 
+     style="min-height: 80vh; background: linear-gradient(rgba(14, 42, 92, 0.85), rgba(0, 0, 0, 0.9)), url('<%= asset_path("services/cctv.webp") %>') no-repeat center center/cover;">
+  
+  <div class="container">
+    <span class="badge bg-danger mb-3 px-3 py-2 rounded-pill text-uppercase" style="letter-spacing: 1px;">
+      Now Available in Nairobi
+    </span>
+    
+    <h1 class="display-3 fw-bolder mb-3 text-uppercase">
+      Professional Security <br> & Guarding Services
+    </h1>
+    
+    <p class="lead mb-5 text-light opacity-75" style="max-width: 700px; margin: 0 auto;">
+      Protecting homes and businesses since 2021. Licensed, vetted, and tech-enabled security solutions for the modern Kenyan environment.
+    </p>
+
+    <div class="d-flex justify-content-center gap-3 flex-column flex-sm-row">
+      <%= link_to new_quote_path, class: "btn btn-danger btn-lg px-5 py-3 fw-bold rounded-1 shadow-lg hover-scale" do %>
+        GET INSTANT ESTIMATE <i class="bi bi-arrow-right ms-2"></i>
+      <% end %>
+
+      <%= link_to services_path, class: "btn btn-outline-light btn-lg px-5 py-3 fw-bold rounded-1 hover-scale" do %>
+        VIEW SERVICES
+      <% end %>
+    </div>
+    
+    <div class="mt-5 pt-3 d-flex justify-content-center align-items-center gap-4 text-white-50">
+      <small><i class="bi bi-shield-fill-check text-success me-1"></i> Licensed</small>
+      <span class="border-end border-secondary h-50"></span>
+      <small><i class="bi bi-check-circle-fill text-success me-1"></i> Vetted Guards</small>
+      <span class="border-end border-secondary h-50"></span>
+      <small><i class="bi bi-star-fill text-warning me-1"></i> 24/7 Support</small>
+    </div>
+  </div>
+</div>
+
+<div class="py-5 bg-white">
+  <div class="container my-4">
+    <div class="row text-center mb-5">
+      <div class="col-12">
+        <h5 class="text-danger fw-bold text-uppercase ls-2">Why Urban Eye?</h5>
+        <h2 class="fw-bolder text-navy">The New Standard in Security</h2>
+      </div>
+    </div>
+
+    <div class="row g-4">
+      <div class="col-md-4">
+        <div class="p-4 border rounded-3 h-100 shadow-sm hover-lift text-center">
+          <div class="d-inline-flex align-items-center justify-content-center bg-light rounded-circle mb-3" style="width: 80px; height: 80px;">
+            <i class="bi bi-shield-lock display-5 text-navy"></i>
+          </div>
+          <h4 class="fw-bold mt-2">100% Vetted Officers</h4>
+          <p class="text-muted">Rigorous DCI background checks and continuous training. We never deploy a guard we wouldn't trust in our own homes.</p>
+        </div>
+      </div>
+
+      <div class="col-md-4">
+        <div class="p-4 border rounded-3 h-100 shadow-sm hover-lift text-center">
+          <div class="d-inline-flex align-items-center justify-content-center bg-light rounded-circle mb-3" style="width: 80px; height: 80px;">
+            <i class="bi bi-cpu display-5 text-navy"></i>
+          </div>
+          <h4 class="fw-bold mt-2">Smart Technology</h4>
+          <p class="text-muted">From AI-powered CCTV to GPS-tracked guard patrols. We use modern tech to eliminate human error.</p>
+        </div>
+      </div>
+
+      <div class="col-md-4">
+        <div class="p-4 border rounded-3 h-100 shadow-sm hover-lift text-center">
+          <div class="d-inline-flex align-items-center justify-content-center bg-light rounded-circle mb-3" style="width: 80px; height: 80px;">
+            <i class="bi bi-stopwatch display-5 text-navy"></i>
+          </div>
+          <h4 class="fw-bold mt-2">Rapid Response</h4>
+          <p class="text-muted">Our dedicated backup teams are stationed across Nairobi, ready to deploy instantly when your alarm triggers.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="py-5 bg-light">
+  <div class="container">
+    <div class="d-flex justify-content-between align-items-end mb-4">
+      <div>
+        <h2 class="fw-bold text-navy">Our Core Solutions</h2>
+        <p class="text-muted mb-0">Comprehensive protection for every risk level.</p>
+      </div>
+      <a href="/services" class="btn btn-outline-dark d-none d-md-block">View All Services</a>
+    </div>
+
+    <div class="row g-4">
+      <div class="col-md-4">
+        <div class="card border-0 shadow-sm h-100">
+           <%= image_tag "services/guarding.jpg", class: "card-img-top", style: "height: 200px; object-fit: cover;" %>
+           <div class="card-body">
+             <h5 class="fw-bold">Manned Guarding</h5>
+             <p class="small text-muted">Uniformed officers for residential & commercial sites.</p>
+             <a href="/services" class="text-danger fw-bold text-decoration-none stretched-link">Learn More &rarr;</a>
+           </div>
+        </div>
+      </div>
+      
+      <div class="col-md-4">
+        <div class="card border-0 shadow-sm h-100">
+           <%= image_tag "services/cctv.webp", class: "card-img-top", style: "height: 200px; object-fit: cover;" %>
+           <div class="card-body">
+             <h5 class="fw-bold">CCTV Systems</h5>
+             <p class="small text-muted">High-definition monitoring with remote mobile access.</p>
+             <a href="/services" class="text-danger fw-bold text-decoration-none stretched-link">Learn More &rarr;</a>
+           </div>
+        </div>
+      </div>
+
+      <div class="col-md-4">
+        <div class="card border-0 shadow-sm h-100">
+           <div class="bg-dark text-white d-flex align-items-center justify-content-center" style="height: 200px;">
+             <i class="bi bi-lightning-charge display-1 text-warning"></i>
+           </div>
+           <div class="card-body">
+             <h5 class="fw-bold">Electric Fencing</h5>
+             <p class="small text-muted">Perimeter defense with automated alarm triggers.</p>
+             <a href="/services" class="text-danger fw-bold text-decoration-none stretched-link">Learn More &rarr;</a>
+           </div>
+        </div>
+      </div>
+    </div>
+    
+    <div class="text-center mt-4 d-md-none">
+       <a href="/services" class="btn btn-outline-dark w-100">View All Services</a>
+    </div>
+  </div>
+</div>
+
+<div class="py-5 bg-white border-top">
+  <div class="container">
+    <div class="row align-items-center">
+      <div class="col-md-6 mb-4 mb-md-0">
+        <h5 class="text-danger fw-bold text-uppercase">Who We Are</h5>
+        <h2 class="fw-bold text-navy mb-3">Urban Eye Security Ltd</h2>
+        <p class="text-muted lead">
+          Founded in 2021 with a clear mission: to bring world-class security standards to Kenyan homes and businesses at an accessible price.
+        </p>
+        <p class="text-muted">
+          We are more than just an installer. We are a fully licensed security partner offering end-to-end protection, from the perimeter wall to the control room.
+        </p>
+        <%= link_to "Read Our Story", about_path, class: "btn btn-dark mt-2" %>
+      </div>
+      <div class="col-md-6 text-center">
+        <div class="bg-light rounded-3 d-flex align-items-center justify-content-center border" style="height: 300px;">
+          <div class="text-muted">
+             <i class="bi bi-shield-fill-check display-1"></i>
+             <p class="mt-2">Insert Photo of Team/Guard Here</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="bg-danger text-white py-5 text-center">
+  <div class="container">
+    <h2 class="fw-bold mb-3">Ready to Secure Your Property?</h2>
+    <p class="lead opacity-90 mb-4">Get a detailed quote in less than 60 seconds.</p>
+    <%= link_to "Get Instant Estimate", new_quote_path, class: "btn btn-light text-danger fw-bold btn-lg px-5 shadow-sm" %>
+  </div>
+</div>
+
+<style>
+  .text-navy { color: #0e2a5c; }
+  .ls-2 { letter-spacing: 2px; }
+  .hover-lift { transition: transform 0.3s ease; }
+  .hover-lift:hover { transform: translateY(-5px); }
+  .hover-scale:hover { transform: scale(1.05); transition: transform 0.2s ease; }
+</style>
