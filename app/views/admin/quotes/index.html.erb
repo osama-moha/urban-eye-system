@@ -53,8 +53,7 @@
           <tr>
             <th>Ref #</th>
             <th>Client Lead</th>
-            <th>System Size</th>
-            <th>Amount</th>
+            <th>System Size / Details</th> <th>Amount</th>
             <th>Date</th>
             <th>Status</th>
             <th class="text-end">Actions</th>
@@ -72,19 +71,38 @@
                   <span class="text-muted fst-italic">No Lead Linked</span>
                 <% end %>
               </td>
+              
               <td>
-                <span class="badge bg-light text-dark border"><%= quote.camera_count %> Cameras</span>
+                <% if quote.building_type == "Manned Guarding" %>
+                  <span class="badge bg-primary bg-opacity-10 text-primary border border-primary">
+                    <i class="bi bi-shield-user"></i> 
+                    <%= quote.purpose.presence || "Guard Service" %>
+                  </span>
+                <% else %>
+                  <span class="badge bg-light text-dark border">
+                    <i class="bi bi-camera-video"></i> 
+                    <%= quote.camera_count %> Cameras
+                  </span>
+                <% end %>
               </td>
-              <td class="fw-bold">KES <%= number_with_delimiter(quote.total_amount.to_i) %></td>
+
+              <td class="fw-bold">
+                <% if quote.building_type == "Manned Guarding" %>
+                   <span class="text-muted small fst-italic">Pending Survey</span>
+                <% else %>
+                   KES <%= number_with_delimiter(quote.total_amount.to_i) %>
+                <% end %>
+              </td>
+              
               <td><%= quote.created_at.strftime("%d %b, %Y") %></td>
               
               <td>
                 <div class="dropdown">
                   <% badge_class = case quote.status 
-                       when 'Paid' then 'bg-success' 
-                       when 'Lost' then 'bg-danger' 
-                       else 'bg-warning text-dark' 
-                     end %>
+                        when 'Paid' then 'bg-success' 
+                        when 'Lost' then 'bg-danger' 
+                        else 'bg-warning text-dark' 
+                      end %>
                   <button class="badge <%= badge_class %> border-0 dropdown-toggle" data-bs-toggle="dropdown">
                     <%= quote.status || 'Pending' %>
                   </button>

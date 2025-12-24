@@ -48,7 +48,7 @@
             <th>Contact Details</th>
             <th>Location</th>
             <th>Interest</th>
-            <th>Date Added</th>
+            <th>Details / Needs</th> <th>Date Added</th>
             <th class="text-end">Actions</th>
           </tr>
         </thead>
@@ -89,6 +89,14 @@
                   <span class="text-muted small">N/A</span>
                 <% end %>
               </td>
+
+              <td class="small text-dark" style="max-width: 250px;">
+                <% if lead.quotes.any? && lead.quotes.last.purpose.present? %>
+                   <%= lead.quotes.last.purpose %>
+                <% else %>
+                   <span class="text-muted fst-italic">-</span>
+                <% end %>
+              </td>
               
               <td class="small text-muted">
                 <%= lead.created_at.strftime("%d %b, %Y") %>
@@ -98,8 +106,8 @@
                 <% quote_count = lead.quotes.count %>
                 <% if quote_count > 0 %>
                   <a href="<%= admin_quotes_path(lead_id: lead.id) %>" class="btn btn-sm btn-outline-primary">
-  View <%= quote_count %> Quote(s)
-</a>
+                    View <%= quote_count %> Quote(s)
+                  </a>
                 <% else %>
                   <span class="badge bg-secondary opacity-25">No Activity</span>
                 <% end %>
