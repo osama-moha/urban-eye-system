@@ -65,44 +65,83 @@ body {
 
   <body class="d-flex flex-column min-vh-100">
 
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark py-2">
-  <div class="container-fluid">
-    
-    <%= link_to root_path, class: "navbar-brand d-flex align-items-center", style: "text-decoration: none;" do %>
-  <span class="fw-bolder text-uppercase" style="color: #ffffff; font-size: 1.5rem; letter-spacing: -1px;">
-    URBAN
-  </span>
+    <header class="shadow-sm">
   
-  <span class="fw-bolder text-uppercase" style="color: #d92e2e; font-size: 1.5rem; letter-spacing: -1px;">
-    EYE
-  </span>
-<% end %>
+  <div class="py-2 text-white" style="background-color: #0e2a5c;">
+    <div class="container d-flex justify-content-between align-items-center">
+      <small class="d-none d-md-block"><i class="bi bi-clock me-2"></i> 24/7 Control Room & Rapid Response</small>
+      <div class="d-flex gap-3">
+        <a href="#" class="text-white"><i class="bi bi-facebook"></i></a>
+        <a href="#" class="text-white"><i class="bi bi-twitter-x"></i></a>
+        <a href="#" class="text-white"><i class="bi bi-linkedin"></i></a>
+        <a href="#" class="text-white"><i class="bi bi-instagram"></i></a>
+      </div>
+    </div>
+  </div>
 
-    <div class="d-flex align-items-center order-lg-last">
+  <div class="bg-white py-4 d-none d-lg-block">
+    <div class="container d-flex justify-content-between align-items-center">
       
-      <%= link_to "Get Estimate", root_path, class: "btn btn-danger btn-sm me-2 fw-bold" %>
+      <%= link_to root_path, class: "text-decoration-none d-flex align-items-center" do %>
+        <span class="fw-bolder text-uppercase" style="color: #000000; font-size: 2.2rem; letter-spacing: -1px; line-height: 1;">URBAN</span>
+        <span class="fw-bolder text-uppercase" style="color: #d92e2e; font-size: 2.2rem; letter-spacing: -1px; line-height: 1;">EYE</span>
+        <div class="ms-2 d-flex flex-column justify-content-center border-start border-2 border-dark ps-2" style="height: 35px;">
+          <span class="fw-bold text-uppercase small text-muted" style="font-size: 0.65rem; letter-spacing: 2px;">Security</span>
+          <span class="fw-bold text-uppercase small text-muted" style="font-size: 0.65rem; letter-spacing: 2px;">Systems</span>
+        </div>
+      <% end %>
 
-      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarContent">
+      <div class="d-flex gap-5">
+        
+        <div class="d-flex align-items-center">
+          <div class="bg-light rounded-circle d-flex align-items-center justify-content-center me-3" style="width: 50px; height: 50px;">
+            <i class="bi bi-telephone-fill text-navy fs-4" style="color: #0e2a5c;"></i>
+          </div>
+          <div>
+            <div class="small text-muted fw-bold text-uppercase">Call Us 24/7</div>
+            <div class="fw-bold fs-5" style="color: #0e2a5c;">0757 617 034</div>
+          </div>
+        </div>
+
+        <div class="d-flex align-items-center">
+          <div class="bg-light rounded-circle d-flex align-items-center justify-content-center me-3" style="width: 50px; height: 50px;">
+            <i class="bi bi-envelope-fill text-navy fs-4" style="color: #0e2a5c;"></i>
+          </div>
+          <div>
+            <div class="small text-muted fw-bold text-uppercase">Email Us</div>
+            <div class="fw-bold fs-5" style="color: #0e2a5c;">admin@urbaneye.co.ke</div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <nav class="navbar navbar-expand-lg navbar-light bg-white border-top border-bottom">
+    <div class="container">
+      
+      <a class="navbar-brand d-lg-none fw-bold" href="/">
+        <span style="color: #000;">URBAN</span><span style="color: #d92e2e;">EYE</span>
+      </a>
+
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mainNav">
         <span class="navbar-toggler-icon"></span>
       </button>
-    </div>
 
-    <div class="collapse navbar-collapse" id="navbarContent">
-      <ul class="navbar-nav ms-auto mb-2 mb-lg-0 me-3">
-        <li class="nav-item">
-  <%= link_to "All Services", services_path, class: "nav-link" %>
-</li>
-        <li class="nav-item">
-  <%= link_to "About Us", "/about", class: "nav-link" %>
-</li>
-        <li class="nav-item">
-          <a class="nav-link" href="#contact">Contact</a>
-        </li>
-      </ul>
+      <div class="collapse navbar-collapse" id="mainNav">
+        <ul class="navbar-nav me-auto mb-2 mb-lg-0 fw-bold text-uppercase small gap-3">
+          <li class="nav-item"><a class="nav-link text-dark" href="/">Home</a></li>
+          <li class="nav-item"><a class="nav-link text-dark" href="/services">Our Solutions</a></li>
+          <li class="nav-item"><a class="nav-link text-dark" href="/about">About Us</a></li>
+          <li class="nav-item"><a class="nav-link text-dark" href="/contact">Contact</a></li>
+        </ul>
+        
+        <%= link_to "Get Instant Estimate", root_path, class: "btn fw-bold text-white px-4 py-2 rounded-0", style: "background-color: #d92e2e;" %>
+      </div>
     </div>
-    
-  </div>
-</nav>
+  </nav>
+
+</header>
 
 <% if system_admin_signed_in? %>
   <nav class="navbar navbar-dark bg-dark px-4 mb-4 shadow-sm">
