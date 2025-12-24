@@ -229,9 +229,7 @@
                   <h3 class="fw-bold mb-1"><i class="bi bi-shield-shaded me-2"></i>Manned Guarding Services</h3>
                   <p class="mb-0 text-white-50">Vetted, Uniformed & Trained Security Officers.</p>
                 </div>
-                <a href="https://wa.me/254111770786?text=Hi, regarding Quote Ref <%= @quote.id %>. Interested in Guards." class="btn btn-warning fw-bold px-4 py-2 shadow hover-lift text-dark">
-                  Get Guard Quote
-                </a>
+                <%= link_to "Get Guard Quote", new_quote_path(service: "guards"), class: "btn btn-warning fw-bold px-4 py-2 shadow hover-lift text-dark" %>
               </div>
             </div>
           </div>

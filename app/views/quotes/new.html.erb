@@ -370,7 +370,9 @@
     const livePrice = document.getElementById('live-price');
     const priceNote = document.getElementById('price-note');
 
-    // --- THE FIX: FIND THE CCTV DROPDOWN ---
+    // Inputs to Fix Validation Error
+    const camInput = document.querySelector("input[name='quote[camera_count]']");
+    const outdoorInput = document.querySelector("input[name='quote[outdoor_count]']");
     const cctvDropdown = document.querySelector("select[name='quote[purpose]']");
 
     if (mode === 'guarding') {
@@ -388,10 +390,14 @@
       submitBtn.value = "Request Risk Assessment";
       updateGuardDetails(); 
       
+      // FIX THE 422 ERROR: Set cameras to 0 so the database accepts the form
+      if(camInput) camInput.value = "0";
+      if(outdoorInput) outdoorInput.value = "0";
+      
       // CRITICAL: DISABLE CCTV DROPDOWN
       if(cctvDropdown) cctvDropdown.disabled = true;
 
-      // 3. Price: SAFE MODE (Only update if element exists)
+      // 3. Price: SAFE MODE
       if (livePrice && priceLabel) {
         priceLabel.innerText = "Monthly Estimate";
         livePrice.innerText = "Pending Survey";
@@ -415,10 +421,13 @@
       submitBtn.value = "Calculate My Quote";
       document.getElementById('guard_details_storage').value = "CCTV Installation"; 
       
+      // RESET CAMERA INPUT (If it was 0, clear it so user can type)
+      if(camInput && camInput.value === "0") camInput.value = "";
+      
       // RE-ENABLE CCTV DROPDOWN
       if(cctvDropdown) cctvDropdown.disabled = false;
 
-      // 3. Price: HOOK MODE (Only update if element exists)
+      // 3. Price: HOOK MODE
       if (livePrice && priceLabel) {
         priceLabel.innerText = "Est. Hardware Cost";
         livePrice.classList.add('text-danger');
@@ -436,7 +445,8 @@
   }
 
   function calculateCCTV() {
-    const camCount = parseInt(document.querySelector("input[name='quote[camera_count]']").value) || 0;
+    const camInput = document.querySelector("input[name='quote[camera_count]']");
+    const camCount = camInput ? (parseInt(camInput.value) || 0) : 0;
     const isSub = document.getElementById("subscription_check").checked;
     
     // Elements
@@ -444,19 +454,17 @@
     const priceNote = document.getElementById('price-note');
     const configCard = document.getElementById('camera-config-card');
 
-    // --- PART 1: UI LOGIC (Always Run This) ---
-    // Hides camera inputs if subscription is checked
+    // --- PART 1: UI LOGIC ---
     if (isSub) {
       if(configCard) configCard.style.display = 'none'; 
     } else {
       if(configCard) configCard.style.display = 'block';
     }
 
-    // --- PART 2: PRICE LOGIC (Only Run If Box Exists) ---
+    // --- PART 2: PRICE LOGIC ---
     if (livePrice && priceNote) {
        if (isSub) {
          livePrice.innerText = "KES 7,999";
-         // UPDATED TEXT HERE
          priceNote.innerText = "+ KES 2,900/mo (12-Month Contract)"; 
          priceNote.classList.add('text-success', 'fw-bold');
        } else {
@@ -471,6 +479,14 @@
 
   // Event Listeners
   document.addEventListener("DOMContentLoaded", function() {
-    document.getElementById("subscription_check").addEventListener("change", calculateCCTV);
+    // 1. Listen for subscription changes
+    const subCheck = document.getElementById("subscription_check");
+    if(subCheck) subCheck.addEventListener("change", calculateCCTV);
+
+    // 2. CHECK URL FOR "service=guards" (This makes the button work!)
+    const urlParams = new URLSearchParams(window.location.search);
+    if(urlParams.get('service') === 'guards'){
+       switchTab('guarding');
+    }
   });
 </script>
