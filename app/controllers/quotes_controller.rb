@@ -6,6 +6,7 @@ class QuotesController < ApplicationController
   end
 
   # 2. Process the Form
+  # 2. Process the Form
   def create
     # Capture inputs
     phone = quote_params[:whatsapp_number]
@@ -23,16 +24,19 @@ class QuotesController < ApplicationController
     elsif quote_params[:building_type].present?
       @lead.property_type = quote_params[:building_type] 
     end
-    # -------------------------------------------------------
     
     @lead.save!
 
     # Create the Quote
     @quote = @lead.quotes.new(quote_params.except(:whatsapp_number, :email, :name, :location))
 
-    # --- SAFETY CHECK: Only Calculate if Cameras Exist ---
+    # === THE FIX FOR "CANT BE BLANK" ERROR ===
+    # If the form sent nothing (nil) for cameras, force it to 0
+    @quote.camera_count = 0 if @quote.camera_count.nil?
+    # =========================================
+
+    # --- Only Calculate if Cameras Exist (> 0) ---
     if defined?(PriceCalculator)
-      # Check if we actually have cameras (CCTV Mode)
       if @quote.camera_count.to_i > 0
         calculator = PriceCalculator.new(
           quote_params[:camera_count],
@@ -44,24 +48,20 @@ class QuotesController < ApplicationController
           quote_params[:ups],
           quote_params[:subscription] 
         )
-        
         result = calculator.calculate
         @quote.total_amount = result[:total]
       else
-        # GUARD MODE: No hardware cost, price is 0 (Pending Survey)
+        # GUARD MODE: Price is 0 (Pending Survey)
         @quote.total_amount = 0
       end
-      
       @quote.subscription = quote_params[:subscription]
     else
       @quote.total_amount = 0
     end
-    # -----------------------------------------------------
 
     if @quote.save
       redirect_to @quote, notice: 'Quote created successfully.'
     else
-      # If you see "Unprocessable Entity", the issue is in app/models/quote.rb
       render :new, status: :unprocessable_entity
     end
   end
