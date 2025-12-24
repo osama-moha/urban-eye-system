@@ -73,7 +73,7 @@
               </td>
               
               <td>
-                <% if quote.building_type == "Manned Guarding" %>
+                <% if quote.building_type == "Manned Guarding" || quote.purpose.to_s.include?("Guard") %>
                   <span class="badge bg-primary bg-opacity-10 text-primary border border-primary">
                     <i class="bi bi-shield-user"></i> 
                     <%= quote.purpose.presence || "Guard Service" %>
