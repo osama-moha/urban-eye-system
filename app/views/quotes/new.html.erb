@@ -347,6 +347,10 @@
     const livePrice = document.getElementById('live-price');
     const priceNote = document.getElementById('price-note');
 
+    // --- THE FIX: FIND THE CCTV DROPDOWN ---
+    // We select it specifically so we can disable it when in Guard mode
+    const cctvDropdown = document.querySelector("select[name='quote[purpose]']");
+
     if (mode === 'guarding') {
       // 1. UI: Guard Mode
       guardTab.classList.add('active');
@@ -357,10 +361,14 @@
       techSpecsCard.style.display = 'none';   // Hide UPS/Recording for guards
       floorsContainer.style.display = 'none'; // Hide Floors for guards
 
-      // 2. Data
+      // 2. Data & Conflict Fix
       interestField.value = "Manned Guarding";
       submitBtn.value = "Request Risk Assessment";
       updateGuardDetails(); // Save guard count
+      
+      // CRITICAL: DISABLE CCTV DROPDOWN
+      // This stops it from overwriting your Guard details with "Theft Prevention"
+      if(cctvDropdown) cctvDropdown.disabled = true;
 
       // 3. Price: SAFE MODE
       priceLabel.innerText = "Monthly Estimate";
@@ -383,6 +391,9 @@
       interestField.value = "CCTV System";
       submitBtn.value = "Get Official Quote";
       document.getElementById('guard_details_storage').value = "CCTV Installation"; // Reset logic
+      
+      // RE-ENABLE CCTV DROPDOWN
+      if(cctvDropdown) cctvDropdown.disabled = false;
 
       // 3. Price: HOOK MODE
       priceLabel.innerText = "Est. Hardware Cost";
