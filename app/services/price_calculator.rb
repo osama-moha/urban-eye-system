@@ -68,8 +68,8 @@ class PriceCalculator
     # ------------------------------------------------
     
     # 1. Hardware Costs
-    cost_camera_indoor  = 2000
-    cost_camera_outdoor = 2800 
+    cost_camera_indoor  = 1800
+    cost_camera_outdoor = 2500 
     
     raw_cost_cameras = (@indoor * cost_camera_indoor) + (@outdoor * cost_camera_outdoor)
     raw_cost_central = get_dvr_cost(@total) + get_hdd_cost(@total) + get_psu_cost(@total)
