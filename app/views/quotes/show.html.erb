@@ -98,30 +98,50 @@
                 <td>
                   <strong>Hikvision Turbo HD Hardware Kit</strong>
                   <ul class="small text-muted mb-0 mt-1 ps-3">
-                    <li><%= @quote.camera_count %>x Hikvision HD Cameras</li>
-                    <li>DVR + <%= @quote.recording_days %>-Day Storage</li>
+                    <li><%= @quote.camera_count %>x Hikvision HD Cameras (Night Vision)</li>
+                    <li><%= @dvr_name || "DVR" %> + <%= @hdd_name || "Storage" %></li>
                     <% if @quote.monitor? %><li>Monitor included</li><% end %>
                   </ul>
                 </td>
                 <td class="text-center">1 Set</td>
-                <td class="text-end fw-bold"><%= number_to_currency((@quote.total_amount * 0.75), unit: "", precision: 0) %></td>
+                <td class="text-end fw-bold">
+                  <%= number_to_currency(@hardware, unit: "", precision: 0) %>
+                </td>
               </tr>
+              
               <tr>
-                <td><strong>Cabling & Infrastructure</strong></td>
+                <td>
+                    <strong>Cabling & Infrastructure</strong>
+                    <ul class="small text-muted mb-0 mt-1 ps-3">
+                        <li>Coaxial/Cat6 Cabling, BNCs & Power Supply</li>
+                        <li>Trunking, Conduit & Mounting Accessories</li>
+                    </ul>
+                </td>
                 <td class="text-center">1 Lot</td>
-                <td class="text-end fw-bold"><%= number_to_currency((@quote.total_amount * 0.10), unit: "", precision: 0) %></td>
+                <td class="text-end fw-bold">
+                    <%= number_to_currency(@infrastructure, unit: "", precision: 0) %>
+                </td>
               </tr>
+              
               <tr>
-                <td><strong>Labor & Configuration</strong></td>
+                <td>
+                    <strong>Professional Labor & Config</strong>
+                    <ul class="small text-muted mb-0 mt-1 ps-3">
+                        <li>Installation, Focusing & Mobile App Setup</li>
+                    </ul>
+                </td>
                 <td class="text-center">1 Lot</td>
-                <td class="text-end fw-bold"><%= number_to_currency((@quote.total_amount * 0.15), unit: "", precision: 0) %></td>
+                <td class="text-end fw-bold">
+                    <%= number_to_currency(@labor, unit: "", precision: 0) %>
+                </td>
               </tr>
+
               <tr style="border-top: 3px solid #000;">
                 <td colspan="3" style="padding: 0;">
                   <div class="print-color" style="background-color: #003366 !important; -webkit-print-color-adjust: exact; color: white; padding: 20px; display: flex; justify-content: center; align-items: center; gap: 20px;">
                     <span style="font-size: 18px; text-transform: uppercase;">Grand Total (KES):</span>
                     <span style="font-size: 32px; font-weight: 800;">
-                      <%= number_to_currency(@quote.total_amount, unit: "KES ", precision: 0) %>
+                      <%= number_to_currency(@min || @quote.total_amount, unit: "KES ", precision: 0) %>
                     </span>
                   </div>
                 </td>
@@ -129,6 +149,17 @@
             </tbody>
           </table>
         <% end %>
+
+        <div class="mt-5 pt-4 border-top">
+          <h6 class="fw-bold text-uppercase mb-3" style="color: #003366; font-size: 12px;">Terms & Conditions of Service</h6>
+          <ol class="small text-muted" style="font-size: 11px; line-height: 1.4;">
+            <li><strong>Validity:</strong> This quotation is valid for 14 days from the date of issue due to currency fluctuation.</li>
+            <li><strong>Payment:</strong> 70% Deposit required to mobilize materials. 30% Balance due immediately upon commissioning.</li>
+            <li><strong>Warranty:</strong> 1-Year Warranty on Hardware (Manufacturer defects). 3-Month Warranty on Workmanship.</li>
+            <li><strong>Power Liability:</strong> Client is responsible for providing stable power. Damage caused by power surges (KPLC) is not covered unless a Power Guard/UPS is purchased.</li>
+            <li><strong>Data Retention:</strong> "Days of Recording" is an estimate based on motion detection settings.</li>
+          </ol>
+        </div>
 
         <div class="d-grid gap-2 d-md-flex justify-content-md-center mt-5 d-print-none">
           <button onclick="window.print()" class="btn btn-dark btn-lg px-4">
@@ -141,7 +172,6 @@
   </div>
 
 <% else %>
-  
   <% if @quote.total_amount.to_i == 0 %>
     
     <div class="container mt-5 mb-5">
@@ -256,7 +286,8 @@
         </div>
       </div>
     </div>
-  <% end %> <style>
+  <% end %> 
+  <style>
     .hover-card { transition: transform 0.2s; }
     .hover-card:hover { transform: translateY(-5px); border-color: #dc3545 !important; }
     .hover-lift:hover { transform: translateY(-2px); }
