@@ -8,9 +8,9 @@
 
   <div class="row mb-4">
     <div class="col-md-4">
-      <div class="card border-0 shadow-sm p-3 text-white" style="background-color: #003366;">
+      <div class="card border-0 shadow-sm p-3 text-white" style="background-color: #0e2a5c;">
         <small class="text-uppercase fw-bold opacity-75">Pipeline Value</small>
-        <h2 class="mb-0">KES <%= number_with_delimiter(Quote.sum(:total_amount).to_i) %></h2>
+        <h2 class="mb-0">KES <%= number_with_delimiter(Quote.where("total_amount > 0").sum(:total_amount).to_i) %></h2>
       </div>
     </div>
     <div class="col-md-4">
@@ -21,8 +21,8 @@
     </div>
     <div class="col-md-4">
       <div class="card border-0 shadow-sm p-3 bg-white text-center">
-        <small class="text-uppercase fw-bold text-muted">Camera Units Quoted</small>
-        <h2 class="mb-0 text-dark"><%= Quote.sum(:camera_count) %></h2>
+        <small class="text-uppercase fw-bold text-muted">Active Inquiries</small>
+        <h2 class="mb-0 text-dark"><%= Quote.where(status: "Pending").count %></h2>
       </div>
     </div>
   </div>
@@ -41,7 +41,7 @@
 
   <div class="card shadow-sm border-0">
     <div class="card-header bg-white py-3 d-flex justify-content-between align-items-center">
-      <h5 class="mb-0 fw-bold">Recent Quotations</h5>
+      <h5 class="mb-0 fw-bold">Recent Inquiries & Quotes</h5>
       <div>
         <%= link_to 'Export Excel', admin_quotes_path(format: :xlsx), class: 'btn btn-outline-success btn-sm me-2' %>
         <%= link_to 'New Quote', new_quote_path, class: 'btn btn-primary btn-sm' %>
@@ -53,62 +53,74 @@
           <tr>
             <th>Ref #</th>
             <th>Client Lead</th>
-            <th>System Size / Details</th> <th>Amount</th>
+            <th>Service / System</th> 
+            <th>Amount / Status</th>
             <th>Date</th>
-            <th>Status</th>
+            <th>Stage</th>
             <th class="text-end">Actions</th>
           </tr>
         </thead>
         <tbody>
           <% @quotes.each do |quote| %>
             <tr>
-              <td class="fw-bold text-navy">UES/2025/QT-<%= quote.id.to_s.rjust(4, '0') %></td>
+              <td class="fw-bold text-navy small">UES-<%= quote.id %></td>
+              
               <td>
                 <% if quote.lead %>
-                  <%= quote.lead.name.presence || "Lead ##{quote.lead.id}" %>
-                  <br><small class="text-muted"><%= quote.lead.phone %></small>
+                  <span class="fw-bold"><%= quote.lead.name %></span>
+                  <div class="small text-muted"><i class="bi bi-whatsapp me-1"></i><%= quote.lead.phone %></div>
+                  <div class="small text-muted"><i class="bi bi-geo-alt-fill me-1"></i><%= quote.lead.location %></div>
                 <% else %>
-                  <span class="text-muted fst-italic">No Lead Linked</span>
+                  <span class="text-muted fst-italic">Unlinked</span>
                 <% end %>
               </td>
               
               <td>
-                <% if quote.building_type == "Manned Guarding" || quote.purpose.to_s.include?("Guard") %>
-                  <span class="badge bg-primary bg-opacity-10 text-primary border border-primary">
-                    <i class="bi bi-shield-user"></i> 
-                    <%= quote.purpose.presence || "Guard Service" %>
-                  </span>
-                <% else %>
+                <% if quote.camera_count.to_i > 0 %>
                   <span class="badge bg-light text-dark border">
-                    <i class="bi bi-camera-video"></i> 
-                    <%= quote.camera_count %> Cameras
+                    <i class="bi bi-camera-video-fill text-danger"></i> 
+                    <%= quote.camera_count %> Cam System
                   </span>
+                  <div class="small text-muted mt-1"><%= quote.building_type %></div>
+                <% else %>
+                  <span class="badge bg-primary bg-opacity-10 text-primary border border-primary">
+                    <i class="bi bi-star-fill"></i> 
+                    <%= quote.building_type.presence || "General Inquiry" %>
+                  </span>
+                  <% if quote.purpose.present? %>
+                    <div class="small text-muted text-truncate" style="max-width: 200px;">
+                      Note: <%= quote.purpose %>
+                    </div>
+                  <% end %>
                 <% end %>
               </td>
 
               <td class="fw-bold">
-                <% if quote.building_type == "Manned Guarding" %>
-                   <span class="text-muted small fst-italic">Pending Survey</span>
-                <% else %>
+                <% if quote.total_amount.to_i > 0 %>
                    KES <%= number_with_delimiter(quote.total_amount.to_i) %>
+                <% else %>
+                   <span class="badge bg-warning text-dark">
+                     <i class="bi bi-hourglass-split"></i> Pending Survey
+                   </span>
                 <% end %>
               </td>
               
-              <td><%= quote.created_at.strftime("%d %b, %Y") %></td>
+              <td class="small text-muted"><%= quote.created_at.strftime("%d %b") %></td>
               
               <td>
                 <div class="dropdown">
                   <% badge_class = case quote.status 
                         when 'Paid' then 'bg-success' 
                         when 'Lost' then 'bg-danger' 
-                        else 'bg-warning text-dark' 
+                        else 'bg-secondary text-white' 
                       end %>
                   <button class="badge <%= badge_class %> border-0 dropdown-toggle" data-bs-toggle="dropdown">
-                    <%= quote.status || 'Pending' %>
+                    <%= quote.status || 'New' %>
                   </button>
                   <ul class="dropdown-menu">
                     <li><%= button_to 'Pending', update_status_admin_quote_path(quote, status: 'Pending'), method: :patch, class: 'dropdown-item' %></li>
-                    <li><%= button_to 'Paid', update_status_admin_quote_path(quote, status: 'Paid'), method: :patch, class: 'dropdown-item' %></li>
+                    <li><%= button_to 'Surveyed', update_status_admin_quote_path(quote, status: 'Surveyed'), method: :patch, class: 'dropdown-item' %></li>
+                    <li><%= button_to 'Paid / Won', update_status_admin_quote_path(quote, status: 'Paid'), method: :patch, class: 'dropdown-item' %></li>
                     <li><%= button_to 'Lost', update_status_admin_quote_path(quote, status: 'Lost'), method: :patch, class: 'dropdown-item' %></li>
                   </ul>
                 </div>
@@ -116,8 +128,17 @@
 
               <td class="text-end">
                 <div class="btn-group">
-                  <%= link_to 'View PDF', quote_path(quote), class: 'btn btn-sm btn-outline-dark' %>
-                  <%= link_to 'Edit', edit_admin_quote_path(quote), class: 'btn btn-sm btn-outline-secondary' %>
+                  <% if quote.camera_count.to_i > 0 %>
+                    <%= link_to quote_path(quote), class: 'btn btn-sm btn-outline-dark', target: "_blank" do %>
+                      <i class="bi bi-file-pdf"></i> PDF
+                    <% end %>
+                  <% end %>
+                  <%= link_to edit_admin_quote_path(quote), class: 'btn btn-sm btn-outline-secondary' do %>
+                    <i class="bi bi-pencil"></i>
+                  <% end %>
+                  <a href="https://wa.me/<%= quote.whatsapp_number&.gsub(/[^0-9]/, '') %>" target="_blank" class="btn btn-sm btn-success">
+                    <i class="bi bi-whatsapp"></i>
+                  </a>
                 </div>
               </td>
             </tr>
