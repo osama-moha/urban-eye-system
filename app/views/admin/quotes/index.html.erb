@@ -136,9 +136,12 @@
                   <%= link_to edit_admin_quote_path(quote), class: 'btn btn-sm btn-outline-secondary' do %>
                     <i class="bi bi-pencil"></i>
                   <% end %>
-                  <a href="https://wa.me/<%= quote.whatsapp_number&.gsub(/[^0-9]/, '') %>" target="_blank" class="btn btn-sm btn-success">
-                    <i class="bi bi-whatsapp"></i>
-                  </a>
+                  
+                  <% if quote.lead&.phone.present? %>
+                    <a href="https://wa.me/<%= quote.lead.phone.gsub(/[^0-9]/, '') %>" target="_blank" class="btn btn-sm btn-success">
+                      <i class="bi bi-whatsapp"></i>
+                    </a>
+                  <% end %>
                 </div>
               </td>
             </tr>
