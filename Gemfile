@@ -1,7 +1,7 @@
 source "https://rubygems.org"
 
 # Rails 8 Core
-gem "rails", "~> 8.0.2", ">= 8.0.2.1"
+gem "rails", "~> 8.1.1"
 gem "propshaft"
 gem "puma", ">= 5.0"
 gem "importmap-rails"
