@@ -4,145 +4,68 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Free Security Assessment — Urban Eye Security</title>
- 
+
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;600;700;800&family=Barlow:wght@300;400;500;600;700&display=swap" rel="stylesheet">
- 
+
   <link rel="stylesheet" href="assets/style.css" />
- 
+
   <style>
-    /* ── PAGE-LEVEL OVERRIDES: keep everything dark on this page ── */
-    .section-dark {
-      background: var(--navy-mid) !important;
-      color: var(--white) !important;
+
+    /* ── FORM LANDING SECTION ── */
+    .form-landing {
+  background: var(--navy);
+  padding: 124px 0 80px; /* top increased to clear fixed header */
     }
-    .section-dark .section-title,
-    .section-dark h2,
-    .section-dark h3 { color: var(--white) !important; }
-    .section-dark p,
-    .section-dark .section-sub { color: var(--muted) !important; }
-    .section-dark .assessment-intro { background: var(--navy-card) !important; border: 1px solid var(--border) !important; border-left: 4px solid var(--red) !important; box-shadow: none !important; }
-    .section-dark .assessment-intro h2,
-    .section-dark .assessment-intro p { color: inherit !important; }
-    .section-dark .assessment-intro h2 { color: var(--white) !important; }
-    .section-dark .assessment-intro p  { color: var(--muted) !important; }
-    .section-dark .form-wrap { border: 1px solid var(--border) !important; box-shadow: none !important; }
- 
-    /* ── HERO STATS BAR ── */
-    .hero-stats {
-      display: flex;
-      align-items: center;
-      gap: 0;
-      margin-top: 52px;
-      padding-top: 0;
-      border: 1px solid var(--border);
-      border-radius: var(--radius);
-      overflow: hidden;
-    }
-    .stat-block {
-      flex: 1;
-      padding: 20px 28px;
-      border-right: 1px solid var(--border);
-      background: rgba(255,255,255,0.03);
-    }
-    .stat-block:last-child { border-right: none; }
-    .stat-block .s-num {
-      font-family: var(--font-head);
-      font-size: 38px;
-      font-weight: 800;
-      color: var(--red);
-      line-height: 1;
-    }
-    .stat-block .s-label {
-      font-size: 11px;
-      font-weight: 600;
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
-      color: var(--muted);
-      margin-top: 4px;
-    }
- 
-    /* ── WHAT WE WILL ASK ── */
-    .ask-grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 16px;
-      margin-top: 48px;
-    }
-    .ask-card {
-      background: var(--navy-card);
-      border: 1px solid var(--border);
-      border-radius: var(--radius);
-      padding: 28px 24px;
-      position: relative;
-      overflow: hidden;
-    }
-    .ask-card::before {
-      content: '';
-      position: absolute;
-      top: 0; left: 0; right: 0;
-      height: 3px;
-      background: var(--red);
-      opacity: 0.4;
-    }
-    .ask-num {
-      font-family: var(--font-head);
-      font-size: 52px;
-      font-weight: 800;
-      color: rgba(192,34,42,0.1);
-      line-height: 1;
-      margin-bottom: 12px;
-    }
-    .ask-card h4 {
-      font-family: var(--font-head);
-      font-size: 20px;
-      font-weight: 700;
-      text-transform: uppercase;
-      letter-spacing: 0.04em;
-      margin-bottom: 8px;
-    }
-    .ask-card p {
-      font-size: 13px;
-      color: var(--muted);
-      line-height: 1.6;
-    }
- 
-    /* ── FORM SECTION ── */
-    .form-section {
-      background: var(--navy);
-      padding: 80px 0;
-    }
- 
+
     .form-container {
       max-width: 820px;
       margin: 0 auto;
     }
- 
-    .form-header {
-      margin-bottom: 32px;
-    }
-    .form-header h2 {
-      font-family: var(--font-head);
-      font-size: 42px;
-      font-weight: 800;
-      text-transform: uppercase;
-      letter-spacing: 0.02em;
-      margin-bottom: 10px;
-    }
-    .form-header p {
-      font-size: 15px;
-      color: var(--muted);
-    }
- 
-    .form-trust-row {
+
+    /* Compact intro strip */
+    .form-intro-strip {
       display: flex;
-      align-items: center;
-      gap: 24px;
-      margin-bottom: 28px;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 32px;
+      margin-bottom: 32px;
       flex-wrap: wrap;
     }
-    .form-trust-item {
+
+    .form-intro-text h1 {
+      font-family: var(--font-head);
+      font-size: clamp(32px, 5vw, 52px);
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.01em;
+      line-height: 1;
+      color: var(--white);
+      margin-bottom: 10px;
+    }
+
+    .form-intro-text h1 em {
+      font-style: normal;
+      color: var(--red);
+    }
+
+    .form-intro-text p {
+      font-size: 15px;
+      color: var(--muted);
+      max-width: 480px;
+      line-height: 1.6;
+    }
+
+    /* Trust pills on the right */
+    .form-intro-trust {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      flex-shrink: 0;
+    }
+
+    .trust-pill {
       display: flex;
       align-items: center;
       gap: 8px;
@@ -151,37 +74,48 @@
       letter-spacing: 0.06em;
       text-transform: uppercase;
       color: var(--muted);
+      white-space: nowrap;
     }
-    .form-trust-item svg {
-      width: 14px; height: 14px;
+
+    .trust-pill svg {
+      width: 13px;
+      height: 13px;
       color: var(--red);
       flex-shrink: 0;
     }
- 
+
+    /* Form wrapper */
     .form-frame-wrap {
       background: var(--navy-card);
       border: 1px solid var(--border);
       border-radius: var(--radius);
       overflow: hidden;
     }
- 
+
     .form-frame-top {
       background: var(--red);
-      padding: 14px 24px;
+      padding: 13px 22px;
       display: flex;
       align-items: center;
       gap: 10px;
     }
+
+    .form-frame-top svg {
+      width: 15px;
+      height: 15px;
+      color: white;
+      flex-shrink: 0;
+    }
+
     .form-frame-top span {
       font-family: var(--font-head);
-      font-size: 14px;
+      font-size: 13px;
       font-weight: 700;
       letter-spacing: 0.1em;
       text-transform: uppercase;
       color: var(--white);
     }
-    .form-frame-top svg { width: 16px; height: 16px; color: white; }
- 
+
     .form-frame-wrap iframe {
       width: 100%;
       height: 1500px;
@@ -189,23 +123,26 @@
       display: block;
       background: #ffffff;
     }
- 
+
+    /* Below form row */
     .form-below {
       display: flex;
       align-items: center;
       justify-content: space-between;
-      margin-top: 20px;
-      padding: 18px 24px;
+      margin-top: 16px;
+      padding: 16px 22px;
       background: var(--navy-card);
       border: 1px solid var(--border);
       border-radius: var(--radius);
       flex-wrap: wrap;
-      gap: 16px;
+      gap: 14px;
     }
+
     .form-below p {
       font-size: 13px;
       color: var(--muted);
     }
+
     .form-below a {
       font-size: 13px;
       font-weight: 600;
@@ -213,9 +150,54 @@
       border-bottom: 1px solid rgba(255,255,255,0.2);
       transition: color 0.2s, border-color 0.2s;
     }
-    .form-below a:hover { color: var(--white); border-color: var(--white); }
- 
+
+    .form-below a:hover {
+      color: var(--white);
+      border-color: var(--white);
+    }
+
+    /* Privacy note */
+    .privacy-note {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      background: rgba(192,34,42,0.06);
+      border: 1px solid rgba(192,34,42,0.14);
+      border-radius: var(--radius);
+      padding: 16px 20px;
+      margin-top: 16px;
+    }
+
+    .privacy-note svg {
+      width: 16px;
+      height: 16px;
+      color: var(--red);
+      flex-shrink: 0;
+      margin-top: 2px;
+    }
+
+    .privacy-note p {
+      font-size: 12px;
+      color: var(--muted);
+      line-height: 1.6;
+    }
+
+    .privacy-note strong {
+      color: var(--off-white);
+    }
+
     /* ── WHAT HAPPENS NEXT ── */
+    .section-dark {
+      background: var(--navy-mid) !important;
+      color: var(--white) !important;
+    }
+    .section-dark .section-title,
+    .section-dark h2,
+    .section-dark h3,
+    .section-dark h4 { color: var(--white) !important; }
+    .section-dark p,
+    .section-dark .section-sub { color: var(--muted) !important; }
+
     .next-grid {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
@@ -225,20 +207,30 @@
       border-radius: var(--radius);
       overflow: hidden;
     }
+
     .next-card {
       background: var(--navy-card);
       padding: 40px 32px;
-      position: relative;
     }
+
     .next-icon {
-      width: 44px; height: 44px;
+      width: 44px;
+      height: 44px;
       background: var(--red-dim);
       border: 1px solid rgba(192,34,42,0.25);
       border-radius: 50%;
-      display: flex; align-items: center; justify-content: center;
+      display: flex;
+      align-items: center;
+      justify-content: center;
       margin-bottom: 20px;
     }
-    .next-icon svg { width: 20px; height: 20px; color: var(--red); }
+
+    .next-icon svg {
+      width: 20px;
+      height: 20px;
+      color: var(--red);
+    }
+
     .next-card .n-step {
       font-size: 11px;
       font-weight: 700;
@@ -247,6 +239,7 @@
       color: var(--red);
       margin-bottom: 8px;
     }
+
     .next-card h4 {
       font-family: var(--font-head);
       font-size: 22px;
@@ -255,46 +248,50 @@
       letter-spacing: 0.04em;
       margin-bottom: 10px;
     }
-    .next-card p { font-size: 13px; color: var(--muted); line-height: 1.7; }
- 
-    /* ── PRIVACY NOTE ── */
-    .privacy-note {
-      display: flex;
-      align-items: flex-start;
-      gap: 14px;
-      background: rgba(192,34,42,0.06);
-      border: 1px solid rgba(192,34,42,0.15);
-      border-radius: var(--radius);
-      padding: 20px 24px;
-      margin-top: 48px;
+
+    .next-card p {
+      font-size: 13px;
+      color: var(--muted);
+      line-height: 1.7;
     }
-    .privacy-note svg { width: 18px; height: 18px; color: var(--red); flex-shrink: 0; margin-top: 2px; }
-    .privacy-note p { font-size: 13px; color: var(--muted); line-height: 1.6; }
-    .privacy-note strong { color: var(--off-white); }
- 
-    /* ── WHATSAPP CTA BAND ── */
+
+    /* ── WHATSAPP BAND ── */
     .wa-band {
       background: var(--navy-light);
       border-top: 1px solid var(--border);
       border-bottom: 1px solid var(--border);
       padding: 64px 0;
     }
+
     .wa-inner {
       display: grid;
       grid-template-columns: 1fr auto;
       gap: 40px;
       align-items: center;
     }
+
     .wa-inner h2 {
       font-family: var(--font-head);
-      font-size: clamp(32px, 4vw, 52px);
+      font-size: clamp(30px, 4vw, 52px);
       font-weight: 800;
       text-transform: uppercase;
       line-height: 1;
       margin-bottom: 10px;
+      color: var(--white);
     }
-    .wa-inner p { font-size: 15px; color: var(--muted); }
-    .wa-actions { display: flex; flex-direction: column; gap: 12px; align-items: flex-end; }
+
+    .wa-inner p {
+      font-size: 15px;
+      color: var(--muted);
+    }
+
+    .wa-actions {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      align-items: flex-end;
+    }
+
     .btn-wa {
       display: inline-flex;
       align-items: center;
@@ -310,34 +307,39 @@
       transition: background 0.2s, transform 0.15s;
       white-space: nowrap;
     }
+
     .btn-wa:hover { background: #1eba59; transform: translateY(-2px); }
     .btn-wa svg { width: 18px; height: 18px; fill: white; }
+
     .wa-number {
       font-size: 13px;
       color: var(--muted);
       text-align: right;
     }
-    .wa-number strong { color: var(--off-white); font-size: 15px; display: block; }
- 
+
+    .wa-number strong {
+      color: var(--off-white);
+      font-size: 15px;
+      display: block;
+    }
+
     /* ── RESPONSIVE ── */
-    @media (max-width: 860px) {
-      .ask-grid { grid-template-columns: 1fr 1fr; }
+    @media (max-width: 720px) {
+      .form-intro-strip { flex-direction: column; gap: 20px; }
+      .form-intro-trust { flex-direction: row; flex-wrap: wrap; gap: 12px 20px; }
       .next-grid { grid-template-columns: 1fr; }
       .wa-inner { grid-template-columns: 1fr; }
       .wa-actions { align-items: flex-start; }
       .wa-number { text-align: left; }
     }
-    @media (max-width: 560px) {
-      .ask-grid { grid-template-columns: 1fr; }
-      .hero-stats { flex-direction: column; }
-      .stat-block { border-right: none; border-bottom: 1px solid var(--border); }
-      .stat-block:last-child { border-bottom: none; }
-      .form-trust-row { gap: 14px; }
+
+    @media (max-width: 480px) {
+      .form-frame-wrap iframe { height: 1650px; }
     }
   </style>
 </head>
 <body>
- 
+
 <!-- ─── HEADER ─── -->
 <header class="site-header">
   <div class="container header-inner">
@@ -356,124 +358,39 @@
     </nav>
   </div>
 </header>
- 
-<!-- ─── HERO ─── -->
-<section class="hero hero-small">
-  <div class="hero-grid"></div>
-  <div class="hero-bg-img assessment-bg"></div>
-  <div class="hero-bg"></div>
- 
-  <div class="container">
-    <div class="hero-content">
-      <span class="kicker">Free Security Assessment</span>
-      <h1>2-Minute<br><em>Assessment</em></h1>
-      <p>
-        Complete this short assessment so our team can understand your property,
-        security needs, and recommend the most suitable protection plan.
-      </p>
-      <div class="hero-actions">
-        <a href="#assessment-form" class="btn-primary">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
-          Start Assessment
-        </a>
-        <a href="https://wa.me/254111770786" target="_blank" rel="noopener" class="btn-ghost">Talk on WhatsApp</a>
-      </div>
- 
-      <div class="hero-stats">
-        <div class="stat-block">
-          <div class="s-num">2</div>
-          <div class="s-label">Minutes to complete</div>
-        </div>
-        <div class="stat-block">
-          <div class="s-num">0</div>
-          <div class="s-label">Obligation or pressure</div>
-        </div>
-        <div class="stat-block">
-          <div class="s-num">24h</div>
-          <div class="s-label">Response time</div>
-        </div>
-        <div class="stat-block">
-          <div class="s-num">KE</div>
-          <div class="s-label">Serving Kenya</div>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
- 
-<!-- ─── WHAT WE'LL ASK ─── -->
-<section class="section section-dark">
-  <div class="container">
-    <div class="section-header">
-      <span class="section-eyebrow">Before You Fill In</span>
-      <h2 class="section-title">What We'll Ask You</h2>
-      <p class="section-sub">Six quick topics — no personal data, no obligation. Just enough for us to prepare a relevant proposal.</p>
-    </div>
- 
-    <div class="ask-grid">
-      <div class="ask-card">
-        <div class="ask-num">01</div>
-        <h4>Property Type</h4>
-        <p>Home, apartment, office, warehouse, estate, or construction site — we need to know what we're protecting.</p>
-      </div>
-      <div class="ask-card">
-        <div class="ask-num">02</div>
-        <h4>Location & Size</h4>
-        <p>Nairobi area or county, and approximate size of the property or number of entry points.</p>
-      </div>
-      <div class="ask-card">
-        <div class="ask-num">03</div>
-        <h4>Current Security</h4>
-        <p>What you already have in place — guards, cameras, alarms, electric fence — so we don't duplicate.</p>
-      </div>
-      <div class="ask-card">
-        <div class="ask-num">04</div>
-        <h4>Main Concerns</h4>
-        <p>Burglary, staff monitoring, perimeter breach, vehicle theft, or general peace of mind — your priority drives our recommendation.</p>
-      </div>
-      <div class="ask-card">
-        <div class="ask-num">05</div>
-        <h4>Services Interested In</h4>
-        <p>Guards, CCTV, smart alarms, access control, electric fencing — or a full integrated solution.</p>
-      </div>
-      <div class="ask-card">
-        <div class="ask-num">06</div>
-        <h4>Contact Details</h4>
-        <p>Name and phone number so our team can reach you with a tailored proposal within 24 hours.</p>
-      </div>
-    </div>
-  </div>
-</section>
- 
-<!-- ─── FORM ─── -->
-<section class="form-section" id="assessment-form">
+
+<!-- ─── FORM (immediately after header) ─── -->
+<section class="form-landing" id="assessment-form">
   <div class="container">
     <div class="form-container">
- 
-      <div class="form-header">
-        <h2>Complete the Assessment</h2>
-        <p>All fields are optional except your contact number. Takes under 2 minutes.</p>
+
+      <!-- Compact intro -->
+      <div class="form-intro-strip">
+        <div class="form-intro-text">
+          <h1>2-Minute<br><em>Assessment</em></h1>
+          <p>Start below. We’ll review your answers and contact you with the next step.</p>
+        </div>
+        <div class="form-intro-trust">
+          <div class="trust-pill">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+            Details kept private
+          </div>
+          <div class="trust-pill">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/></svg>
+            Under 2 minutes
+          </div>
+          <div class="trust-pill">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+            No obligation
+          </div>
+          <div class="trust-pill">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 014.99 12 19.79 19.79 0 011.93 3.4 2 2 0 013.9 1.21h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L8.09 8.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z"/></svg>
+            Reply in 24hrs
+          </div>
+        </div>
       </div>
- 
-      <div class="form-trust-row">
-        <div class="form-trust-item">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
-          Your details are private
-        </div>
-        <div class="form-trust-item">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/></svg>
-          Under 2 minutes
-        </div>
-        <div class="form-trust-item">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
-          No obligation
-        </div>
-        <div class="form-trust-item">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 014.99 12 19.79 19.79 0 011.93 3.4 2 2 0 013.9 1.21h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L8.09 8.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z"/></svg>
-          Reply within 24 hours
-        </div>
-      </div>
- 
+
+      <!-- Form -->
       <div class="form-frame-wrap">
         <div class="form-frame-top">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
@@ -486,23 +403,23 @@
           Loading form…
         </iframe>
       </div>
- 
+
       <div class="form-below">
-        <p>Prefer to fill it in directly on Google Forms?</p>
+        <p>Prefer to fill this in directly on Google Forms?</p>
         <a href="https://docs.google.com/forms/d/e/1FAIpQLSfLi2YbLtoNFWD54J8hT8wL12aZZoc4pIRT-cIyXXf5WWCEhA/viewform" target="_blank" rel="noopener">
           Open form in new tab →
         </a>
       </div>
- 
+
       <div class="privacy-note">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
-        <p><strong>Your information is confidential.</strong> Details you share are used only to prepare your security proposal. We do not share your data with third parties or add you to any marketing lists without your consent.</p>
+        <p><strong>Your information is confidential.</strong> Details you share are used only to prepare your security proposal. We do not share your data with third parties or add you to marketing lists.</p>
       </div>
- 
+
     </div>
   </div>
 </section>
- 
+
 <!-- ─── WHAT HAPPENS NEXT ─── -->
 <section class="section section-dark">
   <div class="container">
@@ -511,7 +428,7 @@
       <h2 class="section-title">What Happens Next</h2>
       <p class="section-sub">Here's exactly what to expect after you complete the assessment.</p>
     </div>
- 
+
     <div class="next-grid">
       <div class="next-card">
         <div class="next-icon">
@@ -540,7 +457,7 @@
     </div>
   </div>
 </section>
- 
+
 <!-- ─── WHATSAPP BAND ─── -->
 <section class="wa-band">
   <div class="container">
@@ -551,7 +468,7 @@
       </div>
       <div class="wa-actions">
         <a href="https://wa.me/254111770786" target="_blank" rel="noopener" class="btn-wa">
-          <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.890-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/></svg>
+          <svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.890-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/></svg>
           WhatsApp Urban Eye
         </a>
         <div class="wa-number">
@@ -562,7 +479,7 @@
     </div>
   </div>
 </section>
- 
+
 <!-- ─── FOOTER ─── -->
 <footer class="footer">
   <div class="container">
@@ -598,16 +515,16 @@
       </div>
     </div>
     <div class="footer-bottom">
-      <p class="footer-copy">© 2025 Urban Eye Security Limited. All rights reserved.</p>
-      <p class="footer-reg">Registered in Kenya · PSIRA Compliant</p>
+      <p class="footer-copy">© 2026 Urban Eye Security Limited. All rights reserved.</p>
+      <p class="footer-reg">Registered in Kenya · PSRA Compliant</p>
     </div>
   </div>
 </footer>
- 
+
 <!-- WhatsApp Float -->
 <a class="whatsapp-float" href="https://wa.me/254111770786" target="_blank" rel="noopener" aria-label="Chat on WhatsApp">
   <svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.890-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/></svg>
 </a>
- 
+
 </body>
 </html>
